@@ -1,5 +1,7 @@
 # 硬件和几何决策
 
+准备采购或指导装配时读[采购清单与具体装配](../../../docs/bom-and-assembly.md)，按所选功能和目标机现状确认数量。4P胶壳/端子按实际重做的插头数计算，接口规格以匹配原插座为准；不要把市场“XH2.54”名称当作JST XH标称间距。辅助模型散热和驱动散热风扇均复用原厂件，按需准备改接线材。
+
 适用基板是ZNP K1 V2.0。原Z: STEP PC10、DIR PA13、ENABLE PC11、UART PC5。E1: PB1、PB2、PB0、PB6。E0 PA5/PA6/PA4/PC4是挤出机，不分配给Z。
 
 指定已用模块MKS TMC2209 V2.0；两颗R110各0.110Ω，不合并电阻；UART跳线闭合，M0/M1/M2开路，地址0。按实际模块而不是芯片家族核对。参考E1 dir_pin !PB2、原Z PA13、enable均取反、16细分、rotation_distance8、0.6A、threshold0；方向与电流不当成每台通用参数。

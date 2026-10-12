@@ -29,7 +29,7 @@ description: Adapt or troubleshoot the Neptune 4 Max ZNP K1 V2.0 modification pr
 
 ## 按任务读取资料
 
-- 双Z、驱动、风扇或擦嘴：读[硬件和几何](references/hardware-and-geometry.md)，再读项目docs/hardware.md与相关cfg。
+- 双Z、驱动、风扇或擦嘴：准备物料和装配时读[采购与装配指南](../../docs/bom-and-assembly.md)；配置或标定时读[硬件和几何](references/hardware-and-geometry.md)，再读项目docs/hardware.md与相关cfg。
 - ADXL、床网、老Python或源补丁：读[软件和ADXL](references/software-and-adxl.md)，再读docs/software.md、docs/features.md及对应实现。
 - 自适应/全床中心参考温漂修正：读[模块部署与验收](references/adaptive-mesh-drift.md)，再按需读项目docs/adaptive-mesh-drift.md；原生BED_MESH_CALIBRATE/G29不自动启用此项。
 - 上线、排错、切片或回退：读[验证与切片](references/validation-and-slicer.md)，再读docs/validation.md、docs/slicer.md及相关的docs/lessons-learned.md经验条目。

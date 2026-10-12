@@ -60,7 +60,7 @@ flowchart TD
 
 ## 第三层：实现与故障资料
 
-- 装配、引脚和参考几何：[硬件说明](../../../docs/hardware.md)及[硬件决策摘要](hardware-and-geometry.md)。
+- 采购数量与分步装配：[采购与装配指南](../../../docs/bom-and-assembly.md)；引脚、照片和参考几何：[硬件说明](../../../docs/hardware.md)及[硬件决策摘要](hardware-and-geometry.md)。
 - 旧环境、Linux MCU 构建与插件接口：[软件适配](../../../docs/software.md)及[软件/ADXL 摘要](software-and-adxl.md)。
 - 热稳定、会话、随机点、床网和 offset 计算：[工作原理](../../../docs/features.md)。
 - 预设与实际 G-code 差异：[切片说明](../../../docs/slicer.md)；验收与故障：[验收指南](../../../docs/validation.md)、[精选经验](../../../docs/lessons-learned.md)。

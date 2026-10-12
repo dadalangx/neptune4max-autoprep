@@ -19,7 +19,7 @@ The owner confirms that the reference printer works normally. The complete setup
 | Bambu Studio support | Supplies a reference project and start/end code, with improved web interface metadata recognition |
 | Factory software compatibility | Keeps the original software environment and merges changes for the actual version |
 
-You can choose only some features. Dual Z, wiping, and fan modifications require the corresponding hardware work. The complete setup can use an **MKS TMC2209 V2.0** and a **silicone nozzle wiper for the Bambu Lab A1**. Have the agent prepare a parts and assembly list for your selected features using the [hardware guide and photos](docs/hardware.md).
+You can choose only some features. Dual Z, wiping, and fan modifications require the corresponding hardware work. The complete setup can use an **MKS TMC2209 V2.0** and a **silicone nozzle wiper for the Bambu Lab A1**. Start with the [parts list and assembly steps (Chinese)](docs/bom-and-assembly.md), then have the agent confirm the requirements for your selected features using the [hardware guide and photos](docs/hardware.md).
 
 ## How to use it
 
