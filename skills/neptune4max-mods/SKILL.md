@@ -7,6 +7,12 @@ description: Adapt or troubleshoot the Neptune 4 Max ZNP K1 V2.0 modification pr
 
 把本项目作为已使用改装机的工程参考，按用户所选功能适配目标机器。它不是经过原装全系列验收的一键安装包。准备发布材料不意味着授权修改机主正常运行的打印机；只读请求保持只读。
 
+## 复刻流程入口
+
+复刻或扩展功能时先读[总流程与依赖矩阵](references/replication-workflow.md)，确定目标机当前阶段和所选模块。总流程再指向[盘点、装配与部署步骤](references/deployment-and-integration.md)及[标定、切片与验收步骤](references/commissioning-and-calibration.md)，只读所处阶段及有关模块，按每阶段的输入、动作、完成证据和失败处理推进。
+
+只排错或维护时从相关阶段开始；只整理资料时不进入机器部署。每台目标机保存私有接手记录，区分待测、模拟、计划、通信、接触和打印结果，跨会话继续前核对实时状态；不因记录写了“已完成”就自动重复实体动作。
+
 ## 开始时确认什么
 
 读取用户提供的仓库 README、目标地址与任务范围。地址由用户自行确定，仓库不包含参考机IP；常见原厂SSH为mks/makerbase，用户修改后的凭据按其提供处理。如果skill被单独安装，先取得项目源码目录，再使用其中的source/config/patches，而不是以为skill含有全部程序。

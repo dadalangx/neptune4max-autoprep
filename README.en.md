@@ -2,103 +2,50 @@
 
 # Neptune 4 Max AutoPrep
 
-Automated print preparation for the Elegoo Neptune 4 Max / ZNP K1 V2.0, with modification guides, custom source code, reference configurations, and an AI handoff guide.
+Automate more of the Neptune 4 Max's print preparation and reduce repetitive leveling, wiping, and first-layer height adjustment. This project provides source code, reference configurations, and an agent guide for a setup in regular use. Give it to Codex or another AI agent to adapt the features you choose to your own printer.
 
-This project documents the modifications developed on a printer in regular use. Give the repository to Codex or another AI agent so it can inspect your printer, adapt the features you choose, back up the affected files, and validate each change. The project shares an approach and its implementation; it does not provide an installer that overwrites the factory configuration.
+The owner confirms that the reference printer works normally. The complete setup has not yet been reproduced and accepted on a second, unmodified Neptune 4 Max; each feature needs inspection and calibration.
 
-**The owner confirms that the reference printer operates normally. The complete setup has not yet been reproduced and accepted on a second, unmodified Neptune 4 Max.** Coordinates, motor directions, currents, and nozzle contact windows include calibration values specific to the reference machine. They are not universal settings for every 4 Max.
+## What it offers
 
-**After powering on or restarting Klipper, perform real homing before moving XYZ or calibrating the bed mesh.** The factory startup sequence may assign default toolhead coordinates, making the displayed position and homed state disagree with the physical position. Until real Home has completed during the current startup, users must not issue arbitrary toolhead moves or click the web interface's bed mesh calibration button. After every power-on, `RESTART`, `FIRMWARE_RESTART`, or Klipper service restart, an agent must confirm that a real `G28` has succeeded before subsequent XYZ moves; checking `homed_axes` alone is insufficient. Before homing, check the travel path, clearance, and probe conditions as well. See the [homing rules after startup or restart](docs/validation.md#上电与重启后的归位规则).
-
-## Features
-
-| Feature | Purpose and implementation |
+| Feature | User benefit |
 |---|---|
-| Independent dual Z and automatic gantry alignment | An added MKS TMC2209 V2.0 lets the original Z and E1 channels drive the two leadscrews independently. The PA11 proximity probe measures three nearby points on each side; `Z_TILT_ADJUST` aligns the gantry, followed by Z homing. |
-| Automatic nozzle Z offset before printing | Reuses the stock toolhead's ADXL345. Each calibration randomly selects one point near the center; three contacts at that point and its bed mesh value determine a temporary offset. PA11 remains responsible for routine homing and bed mesh probing. |
-| Heat stabilization, purging, and silicone wiping | Waits for 300 continuous seconds of bed temperature stability at the first-layer target, then performs a hot wipe followed by a cooler wipe. The final contact measurement uses a one-time wipe session tied to the current file. |
-| Adaptive bed mesh | Probes the area needed for Bambu Studio's first-layer bounds while keeping the ADXL contact area covered. Also supports parsing explicitly marked pressure advance calibration line bounds. |
-| Independent auxiliary cooling fan | The main fan uses FAN2/PB7 and the auxiliary fan uses FAN3/PC9. Bambu `M106 P2` controls the auxiliary fan independently. |
-| Dedicated driver cooling fan | Moves the driver fan from FAN6/PC7, which shares the hotend cooling output, to FAN4/PA8. Runs at full speed while any stepper is enabled, then turns off 60 seconds after all steppers are released. |
-| Proportional main fan control | Maps a 0–100% command to 0–70% PWM while retaining the full command range. The auxiliary channel still supports 100% PWM. |
-| Cold-pull maintenance | Homes, moves to Z200, purges 150 mm at 250°C, then cools through 110°C to 90°C for retraction. Releases the extruder motor, holds the nozzle target at 90°C, and beeps twice. |
-| Bambu metadata support | Adds recognition of Bambu layer count, layer height, model height, and previews to the older Moonraker version. The corresponding older Fluidd version estimates the current layer from Z. |
-| Compatibility with the original software | Keeps the factory Klipper/Python environment and provides `autotune_tmc` source and patches adapted for Python 2 and older Klipper interfaces. |
+| Independent dual Z | Automatically aligns the two sides of the gantry before printing |
+| Automatic nozzle Z offset | Measures the first-layer height reference after cleaning the nozzle |
+| Automated print preparation | Connects bed stabilization, purging, silicone wiping, and calibration |
+| Adaptive bed mesh | Probes the area needed for the current model |
+| Improved fan control | Independent auxiliary cooling, automatic driver cooling, and adjustable main fan output |
+| Cold-pull maintenance | Runs a defined maintenance sequence using a macro or G-code file |
+| Bambu Studio support | Supplies a reference project and start/end code, with improved web interface metadata recognition |
+| Factory software compatibility | Keeps the original software environment and merges changes for the actual version |
 
-The aim is to reduce repetitive manual leveling and preparation. First-layer quality, walls, and cooling still depend on mechanical condition, material, and calibration. Software cannot straighten a bent leadscrew or replace mechanical bed leveling.
+You can choose only some features. Dual Z, wiping, and fan modifications require the corresponding hardware work. The complete setup can use an **MKS TMC2209 V2.0** and a **silicone nozzle wiper for the Bambu Lab A1**. Have the agent prepare a parts and assembly list for your selected features using the [hardware guide and photos](docs/hardware.md).
 
-## The 300-second wait and randomized contact point
+## How to use it
 
-The console message `ADXL bed heat soak` reports the bed stabilization wait: the measured temperature must remain **within ±1°C of the first-layer target for 300 continuous seconds**. Leaving that range resets the timer. `stable=120/300s` means 120 stable seconds have elapsed. This allows the large bed to continue warming before calibration; initial heating takes additional time, and the nozzle must also reach approximately 140°C during preparation. The post-wipe measurement uses `SOAK=0`, so it does not repeat the five-minute wait.
+1. Select **Code → Download ZIP** on GitHub and extract the project.
+2. Open the extracted directory in an agent that can read local files and use SSH, such as Codex. Provide your printer's address and the features you want.
+3. Copy the prompt below. Have the agent inspect the printer, prepare an adaptation and backup plan, then implement the work in stages.
+4. Follow its instructions for assembly with power off, measurements, and on-site observations. Validate each feature before a first-layer print.
 
-`FUZZ=3` randomly selects one point within **±3 mm along each of X and Y** around the contact center. This distributes repeated contacts instead of concentrating them at one spot on the build surface. All three contacts and internal retry groups in a calibration use that same point; the next calibration selects again. PA11 mesh points and the high-Z non-contact check are not randomized. A random selection can repeat a position and does not guarantee a wear-free surface. See the [heat soak and contact measurement details](docs/features.md).
+> Read skills/neptune4max-mods/SKILL.md in this project and follow its replication workflow to adapt my Neptune 4 Max. Printer address: `<your printer address>`; desired features: `<complete setup or list selected features>`. First inspect the existing environment, hardware, and configuration. Prepare the changes and backup plan, then implement each stage within my authorized scope. When assembly, measurements, or observations require my help, explain exactly what I need to do. Record completed steps and anything not yet validated.
 
-## Hardware modifications
+Find the printer address on its screen or in your router. Common factory SSH credentials are username `mks` and password `makerbase`; use your own if they have changed. Downloading the project or reading the skill does not install anything or modify the printer. The user still performs the physical assembly and assists with on-site validation.
 
-- Remove the top Z synchronization belt and the toothed timing pulleys on both leadscrews.
-- Install an **MKS TMC2209 V2.0** in E1. The reference module has two current-sense resistors marked **R110**, configured as `sense_resistor: 0.110`. Bridge **UART only**; leave M0/M1/M2 open.
-- Separate the two previously parallel Z motor leads and crimp them for two independent driver channels: **original Z and E1**.
-- Connect the auxiliary fan to FAN3/PC9 and keep the main fan on FAN2/PB7.
-- Move the driver cooling fan from FAN6/PC7 to FAN4/PA8 so it follows stepper enable state independently. FAN1/PC7 continues to cool the hotend.
-- Use a readily available **silicone nozzle wiper for the Bambu Lab A1**, mounted on the **plastic bracket at the heated bed's cable connection end**, as shown below. Measure wiping coordinates and contact height on your own printer.
+The overall process is inspection → adaptation for selected features → assembly and calibration → first-layer acceptance. The agent reads detailed procedures from the skill as needed.
 
-**Verify which driver controls each physical side.** The agent must have the person performing the modification observe small, slow motor tests to confirm the side and positive direction before configuring gantry alignment coordinates. See [hardware and dual Z](docs/hardware.md).
+**After powering on or restarting Klipper, perform real homing before moving the toolhead or calibrating the bed mesh.** Default interface coordinates and the homed indicator may disagree with the physical position. Until real Home has completed, do not issue arbitrary moves or click the web interface's bed mesh calibration button. The agent checks homing conditions using the [validation guide](docs/validation.md#上电与重启后的归位规则).
 
-E1 jumpers: bridge UART only and leave M0/M1/M2 open. The driver module is temporarily absent in the photo so the jumper position is visible.
+## Using the Bambu Studio preset
 
-![E1 with only the UART jumper installed](docs/images/e1-uart-jumper.jpg)
+After adapting the printer and completing basic validation, open [naptune4max.3mf](slicer/naptune4max.3mf) in Bambu Studio as a **project**. Load its printer, process, and filament settings, then save your own user presets.
 
-Bambu Lab A1 silicone wiper mounted on the plastic bracket at the bed cable connection end:
+The project contains reference settings and a 3DBenchy model. Separate [start code](slicer/start_gcode.txt) and [end code](slicer/end_gcode.txt) are also provided. Have the agent adapt your preset for your hardware, wiper position, and first-layer calibration, then slice again. **Do not run the supplied start code on a stock printer before the required assembly and calibration are complete.** See the [slicer guide](docs/slicer.md).
 
-![Installed Bambu Lab A1 silicone nozzle wiper](docs/images/a1-wiper-installation.jpg)
+## Further reading
 
-The [factory mainboard wiring diagram](docs/images/stock-mainboard-wiring.png) and [ZNP K1 V2.0 pin layout](docs/images/znp-k1-v2-pinout.png) help identify connectors. See [hardware reference diagrams](docs/hardware.md#接线和引脚参考图) for all illustrations.
+- [Agent entry point](skills/neptune4max-mods/SKILL.md): replication, maintenance, and troubleshooting guidance.
+- [Hardware and photos](docs/hardware.md): driver, wiring, fan, and wiper assembly references.
+- [Feature principles](docs/features.md), [software adaptation](docs/software.md), [validation and rollback](docs/validation.md), and [selected lessons](docs/lessons-learned.md): details for agents and interested users.
 
-The toolhead, hotend, extruder, axis motors, and heated bed remain stock. The QIDI motor database entry in the configuration is an approximate parameter choice; it does not indicate an actual extruder replacement.
-
-## Reproduce the setup with an AI agent
-
-Download or clone this repository. Give your agent the following prompt and replace `<your printer address>` with the actual address:
-
-> Read this project's README and skills/neptune4max-mods/SKILL.md, then adapt the Neptune 4 Max for the features I choose. My printer address is `<your printer address>`. First inspect the factory software versions, interpreters, services, and existing configuration. Do not upgrade Klipper, Moonraker, or Python. Provide the hardware prerequisites, file-by-file changes, and backup plan before implementing each feature within my authorized scope. Do not overwrite the entire printer.cfg or treat the reference machine's side mapping, contact windows, wiping coordinates, or first-layer correction as my calibration values. After each power-on or Klipper restart, do not trust default coordinates or homed_axes; confirm that a real G28 has succeeded before moving XYZ or calibrating the bed mesh. Perform motion and contact validation with me beside the printer after I confirm the available clearance.
-
-Common factory SSH credentials are username `mks` and password `makerbase`. These are public factory login details; use your own credentials if they have been changed. Find your printer's address on its screen or in your router. The owner's actual address is not included in this repository.
-
-The skill is a working guide for an AI agent; reading it does not install software. Have the agent read it directly from the repository, or install the entire `skills/neptune4max-mods` directory according to your tool's local skill instructions.
-
-Work through the modules in stages: environment inventory → dual Z/fans as applicable → software compatibility → basic PA11 calibration → ADXL and wiper calibration → slicer and first-layer validation. See [software adaptation](docs/software.md) and [validation and rollback](docs/validation.md) for dependencies and details.
-
-**Documentation language:** this README is available in English and Chinese. The detailed guides and AI skill are currently in Chinese.
-
-## Bambu Studio files
-
-Open [slicer/naptune4max.3mf](slicer/naptune4max.3mf) as a **project** to load its printer, process, and filament settings, then save them as your own user presets. The reference export was made with `BambuStudio-02.08.02.60`, a 0.4 mm nozzle, Generic PETG, and a 3DBenchy model.
-
-The standalone [start G-code](slicer/start_gcode.txt) and [end G-code](slicer/end_gcode.txt) preserve the owner's supplied content and match the code embedded in the 3MF. Read the [slicer adaptation guide](docs/slicer.md) before using them: a stock printer without the wiper must not execute the wiping path, and `+0.140 mm` is the reference machine's first-layer correction.
-
-## Software baseline and sources
-
-| Component | Inspected reference environment |
-|---|---|
-| Platform | aarch64, Debian 10 / Armbian 22.05.0-trunk |
-| Klipper | `v0.10.0-530-g3387a9c2-dirty`, Python **2.7.16** |
-| Moonraker | `v0.7.1-609-gbdd0222-dirty`, Python **3.7.3** |
-| Upstream autotune | `andrewmcgr/klipper_tmc_autotune`, `191d1bfd69336d05de1d7f3907937e32a21b616d`, with compatibility modifications |
-| Tap Linux MCU | Custom `klipper_mcu` built from matching C source. This approach does not require reflashing the mainboard STM32. |
-
-Identical Git HEADs do not prove identical vendor modifications. `reference-manifest.json` records the modified reference printer's fingerprints; it is not an allowlist of supported stock versions. The deployed Linux MCU program and the C source on disk previously diverged, as explained in the [build notes](docs/software.md#linux-mcu-源码与构建).
-
-For a read-only environment check, run `bash tools/preflight.sh` on the printer's Linux system. It outputs JSON without installing, restarting, moving, or heating anything. Check your report for sensitive information before sharing it publicly.
-
-## Repository guide
-
-- [AI skill](skills/neptune4max-mods/SKILL.md): project context and working rules for agents.
-- [Features and principles](docs/features.md): measurement order and the differences between dual Z alignment, bed mesh, and offset.
-- [Selected debugging lessons](docs/lessons-learned.md): useful failure causes and design rationale, with historical experiments distinguished from the current setup.
-- [Hardware](docs/hardware.md), [software](docs/software.md), [slicer](docs/slicer.md), and [validation](docs/validation.md).
-- `source/`: custom modules and required reference source files, rather than a complete Klipper or Moonraker image.
-- `config/reference/`: example configurations to understand and merge for the target printer.
-- `patches/`: diffs against fixed baselines and their fingerprints. Patches containing vendor differences are identified explicitly.
-- [Publication copy](docs/announcement.md) and [third-party sources](THIRD_PARTY.md).
-
-Source code and new project documentation are released under [GNU GPLv3](LICENSE). Independent third-party assets, including models, retain their own licenses; see the source notes. This project has no vendor endorsement. Contributions of sanitized environment reports, reproduction results, and adaptation patches are welcome.
+The detailed guides and skill are currently in Chinese. Source code and new project documentation are released under [GNU GPLv3](LICENSE); third-party assets retain their own licenses, as described in the [source notes](THIRD_PARTY.md). Contributions of sanitized reproduction results and adaptation patches are welcome. Results depend on mechanical condition, materials, and calibration; software cannot replace leadscrew or mechanical bed maintenance.

@@ -2,6 +2,15 @@
 
 ## 先识别目标机器
 
+参考环境如下，用于理解接口，不是目标机器可直接覆盖的版本白名单：
+
+| 项目 | 参考环境 |
+|---|---|
+| 平台 | aarch64，Debian 10 / Armbian 22.05.0-trunk |
+| Klipper | `v0.10.0-530-g3387a9c2-dirty`，Python 2.7.16 |
+| Moonraker | `v0.7.1-609-gbdd0222-dirty`，Python 3.7.3 |
+| autotune 上游 | `andrewmcgr/klipper_tmc_autotune`，`191d1bfd69336d05de1d7f3907937e32a21b616d` 加兼容修改 |
+
 保留目标原厂 Klipper、Moonraker、触摸屏和 Python 是本方案的路线。参考 Klipper 使用 `/home/mks/klippy-env/bin/python` 2.7.16，Moonraker 使用 `/home/mks/moonraker-env/bin/python` 3.7.3；终端里的 `python3` 版本不代表 Klipper 服务解释器。
 
 读取实际服务启动参数、Git HEAD、dirty 文件及相关源文件。`tools/preflight.py` 只做环境盘点；HEAD、改装机文件哈希或检查程序成功都不是原装机器可直接覆盖的证明。目标版本不同时让 AI 比较接口、合并必要逻辑，并说明尚未验证的内容。
