@@ -15,8 +15,8 @@ This project documents the modifications developed on a printer in regular use. 
 | Feature | Purpose and implementation |
 |---|---|
 | Independent dual Z and automatic gantry alignment | An added MKS TMC2209 V2.0 lets the original Z and E1 channels drive the two leadscrews independently. The PA11 proximity probe measures three nearby points on each side; `Z_TILT_ADJUST` aligns the gantry, followed by Z homing. |
-| Automatic nozzle Z offset before printing | Reuses the stock toolhead's ADXL345. The median of three nozzle contacts and the bed mesh value at the contact point determine a temporary offset. PA11 remains responsible for routine homing and bed mesh probing. |
-| Heat stabilization, purging, and silicone wiping | Waits for sustained bed temperature stability at the first-layer target, then performs a hot wipe followed by a cooler wipe. The final contact measurement uses a one-time wipe session tied to the current file. |
+| Automatic nozzle Z offset before printing | Reuses the stock toolhead's ADXL345. Each calibration randomly selects one point near the center; three contacts at that point and its bed mesh value determine a temporary offset. PA11 remains responsible for routine homing and bed mesh probing. |
+| Heat stabilization, purging, and silicone wiping | Waits for 300 continuous seconds of bed temperature stability at the first-layer target, then performs a hot wipe followed by a cooler wipe. The final contact measurement uses a one-time wipe session tied to the current file. |
 | Adaptive bed mesh | Probes the area needed for Bambu Studio's first-layer bounds while keeping the ADXL contact area covered. Also supports parsing explicitly marked pressure advance calibration line bounds. |
 | Independent auxiliary cooling fan | The main fan uses FAN2/PB7 and the auxiliary fan uses FAN3/PC9. Bambu `M106 P2` controls the auxiliary fan independently. |
 | Dedicated driver cooling fan | Moves the driver fan from FAN6/PC7, which shares the hotend cooling output, to FAN4/PA8. Runs at full speed while any stepper is enabled, then turns off 60 seconds after all steppers are released. |
@@ -26,6 +26,12 @@ This project documents the modifications developed on a printer in regular use. 
 | Compatibility with the original software | Keeps the factory Klipper/Python environment and provides `autotune_tmc` source and patches adapted for Python 2 and older Klipper interfaces. |
 
 The aim is to reduce repetitive manual leveling and preparation. First-layer quality, walls, and cooling still depend on mechanical condition, material, and calibration. Software cannot straighten a bent leadscrew or replace mechanical bed leveling.
+
+## The 300-second wait and randomized contact point
+
+The console message `ADXL bed heat soak` reports the bed stabilization wait: the measured temperature must remain **within ±1°C of the first-layer target for 300 continuous seconds**. Leaving that range resets the timer. `stable=120/300s` means 120 stable seconds have elapsed. This allows the large bed to continue warming before calibration; initial heating takes additional time, and the nozzle must also reach approximately 140°C during preparation. The post-wipe measurement uses `SOAK=0`, so it does not repeat the five-minute wait.
+
+`FUZZ=3` randomly selects one point within **±3 mm along each of X and Y** around the contact center. This distributes repeated contacts instead of concentrating them at one spot on the build surface. All three contacts and internal retry groups in a calibration use that same point; the next calibration selects again. PA11 mesh points and the high-Z non-contact check are not randomized. A random selection can repeat a position and does not guarantee a wear-free surface. See the [heat soak and contact measurement details](docs/features.md).
 
 ## Hardware modifications
 
@@ -88,6 +94,7 @@ For a read-only environment check, run `bash tools/preflight.sh` on the printer'
 
 - [AI skill](skills/neptune4max-mods/SKILL.md): project context and working rules for agents.
 - [Features and principles](docs/features.md): measurement order and the differences between dual Z alignment, bed mesh, and offset.
+- [Selected debugging lessons](docs/lessons-learned.md): useful failure causes and design rationale, with historical experiments distinguished from the current setup.
 - [Hardware](docs/hardware.md), [software](docs/software.md), [slicer](docs/slicer.md), and [validation](docs/validation.md).
 - `source/`: custom modules and required reference source files, rather than a complete Klipper or Moonraker image.
 - `config/reference/`: example configurations to understand and merge for the target printer.
