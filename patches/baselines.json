@@ -25,5 +25,14 @@
     "before_sha256": "6c9daf235db72069e03db47e2f8cd608ad5685d3b06e7cdbc4e761327bd2541b",
     "after_sha256": "73b96d3469babf4d7ebad5e5b66d09bf21aaccf0a58ee5d3a195477c6b6f6e29",
     "note": "Compare with vendor target; snapshots may include pre-existing vendor changes."
+  },
+  {
+    "patch": "patches/controller-fan-empty-heater.patch",
+    "upstream": "Klipper3d/klipper",
+    "commit": "3387a9c23d940c7d449f197b272616eda11a5e3d",
+    "target": "klippy/extras/controller_fan.py",
+    "before_sha256": "a959a281ed7ff869f25c5ca31e701652579c0f97d7d592730ef8e8da83d5c6c1",
+    "after_sha256": "83a9b343b739f18b2ccaba4b1579515ad386eabea3796e2839d8ffb7e07b3e27",
+    "note": "Filter empty heater names in the old controller fan. Merge only when the recipient version needs it; valid/default heater behavior is preserved."
   }
 ]

@@ -1,0 +1,21 @@
+--- a/klippy/extras/controller_fan.py
++++ b/klippy/extras/controller_fan.py
+@@ -1,6 +1,8 @@
+ # Support a fan for cooling the MCU whenever a stepper or heater is on
+ #
+ # Copyright (C) 2019  Nils Friedchen <nils.friedchen@googlemail.com>
++#
++# Modified 2026-10-12: allow empty heater lists for motor-only cooling.
+ #
+ # This file may be distributed under the terms of the GNU GPLv3 license.
+ from . import fan
+@@ -23,7 +25,8 @@
+         self.idle_speed = config.getfloat(
+             'idle_speed', default=self.fan_speed, minval=0., maxval=1.)
+         self.idle_timeout = config.getint("idle_timeout", default=30, minval=0)
+-        self.heater_names = config.getlist("heater", ("extruder",))
++        self.heater_names = [
++            n for n in config.getlist("heater", ("extruder",)) if n]
+         self.last_on = self.idle_timeout
+         self.last_speed = 0.
+     def handle_connect(self):

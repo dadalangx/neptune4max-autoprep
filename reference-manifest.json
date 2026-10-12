@@ -133,8 +133,52 @@
       "reference_sha256": "f80402c8884ebd31142bdead767ba4dbbeb203c7a0e21c3b4ba717b48a755135",
       "driver": "MKS TMC2209 V2.0",
       "sense_resistor": 0.11,
-      "motor_side_mapping": "historical tested layout; must reverify on each recipient machine",
-      "published_sha256": "f80402c8884ebd31142bdead767ba4dbbeb203c7a0e21c3b4ba717b48a755135"
+      "motor_side_mapping": "owner-confirmed reference: original Z left, E1 right; recipients must verify their own wiring",
+      "published_sha256": "6198487cdc50530966785b5bbd7f307e8066755dfd6f371a612129d800ee163c"
+    },
+    {
+      "path": "config/reference/driver_cooling.cfg",
+      "source_path": "/home/mks/klipper_config/driver_cooling.cfg",
+      "date": "2026-10-12",
+      "reference_sha256": "6d33ae878d418a93843e25f8fabf50c0bb8c04268358153d7e137160c2ca9377",
+      "role": "owner-verified FAN4/PA8 motor-enable cooling; merge after target pin checks",
+      "published_sha256": "6d33ae878d418a93843e25f8fabf50c0bb8c04268358153d7e137160c2ca9377"
+    },
+    {
+      "path": "source/klipper/klippy/extras/controller_fan.py",
+      "source_path": "/home/mks/klipper/klippy/extras/controller_fan.py",
+      "date": "2026-10-12",
+      "reference_sha256": "5fe27b50176a4fc9ba9b8e4b6cfb7a6211558caa9131209b83bbc4e649ab94ee",
+      "role": "live-tested empty-heater compatibility; published copy adds a modification notice",
+      "published_sha256": "83a9b343b739f18b2ccaba4b1579515ad386eabea3796e2839d8ffb7e07b3e27"
+    },
+    {
+      "path": "docs/images/stock-mainboard-wiring.png",
+      "source": "owner-provided",
+      "date": "2026-10-12",
+      "role": "assembly photo or wiring/pin reference; see THIRD_PARTY.md",
+      "published_sha256": "fd323a63a474d84f34f99a32feba0c9498e76b6815b3d9182203c5aa5e058212"
+    },
+    {
+      "path": "docs/images/a1-wiper-installation.jpg",
+      "source": "owner-provided",
+      "date": "2026-10-12",
+      "role": "assembly photo or wiring/pin reference; see THIRD_PARTY.md",
+      "published_sha256": "4b63fd3d5524ad65bf2a11a942aec680698b81105db175e320104809c761b593"
+    },
+    {
+      "path": "docs/images/e1-uart-jumper.jpg",
+      "source": "owner-provided",
+      "date": "2026-10-12",
+      "role": "assembly photo or wiring/pin reference; see THIRD_PARTY.md",
+      "published_sha256": "9f4fa8151c9954f112c1088d7f1b88cb69fbf5a8eb3b51c6a563e46be0a2e0a0"
+    },
+    {
+      "path": "docs/images/znp-k1-v2-pinout.png",
+      "source": "owner-provided",
+      "date": "2026-10-12",
+      "role": "assembly photo or wiring/pin reference; see THIRD_PARTY.md",
+      "published_sha256": "74d07ea1ab235ba97d0be2dd01f784809883e36a6a4c0a18e4da240dc2a54e29"
     }
   ],
   "versions": {
@@ -154,5 +198,16 @@
     "local_deployment_binary_matches_live_hash": true,
     "source_origin": "original project custom C snapshot; live source was restored to stock"
   },
-  "stock_install_certified": false
+  "stock_install_certified": false,
+  "driver_cooling_validation": {
+    "date": "2026-10-12",
+    "pin": "PA8",
+    "actual_python2_syntax_checked": true,
+    "printer_ready": true,
+    "owner_observed_fan_running": true,
+    "enable_without_stepping_started_fan": true,
+    "release_delay_seconds": 60,
+    "software_output_off_observed_after_seconds": 63,
+    "unrelated_active_settings_unchanged": true
+  }
 }

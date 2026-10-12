@@ -24,11 +24,12 @@ description: Adapt or troubleshoot the Neptune 4 Max ZNP K1 V2.0 modification pr
 ## 决策中保留的关键事实
 
 1. MKS TMC2209 V2.0、R110 → sense_resistor0.110，E1 PB6 UART、地址0，UART跳线单独闭合。参考电流0.6A、threshold0。侧别/方向由实际观察决定；原Z不是E0挤出机通道。
-2. `z_positions`顺序对应stepper_z、stepper_z1。历史侧别记录与近期文字/注释冲突，不从其中任选一个当作当前事实。
+2. `z_positions`顺序对应stepper_z、stepper_z1。参考机已由机主确认原Z左/E1右；每台复刻机器仍必须让用户协助小幅低速验证实际侧别和正向，不能根据参考布局直接推断目标接线。
 3. PA11继续负责G28、床网和Z_TILT；ADXL仅做打印前offset。普通G28不自动校正双Z。wrapper在热稳定准备后、擦嘴/网格前校正。
 4. Tap需要定制Linux MCU C和配套Python。参考机磁盘C是原版，但运行程序是Tap版；仓库source里的定制C来自原项目，不能用参考机磁盘原C重编译代替。
 5. adaptive cfg的ADAPTIVE_MESH_RESOLVE由ADXL模块注册；仅选床网时需要独立适配注册入口。源码patch可能带厂商原有差异，比较后合并，不覆盖未知分支。
 6. +0.140首层修正、擦嘴坐标、-2临时基线、PA11偏移、接触窗口、PID/PA/共振频率属于单机数据。
+7. 驱动风扇由FAN6/PC7移至FAN4/PA8，controller_fan监控五个电机的使能/保持状态，全部释放后延时60秒关闭。heater留空；旧版需核对空列表过滤兼容。PC7热端风扇独立保留。
 
 ## 落地与结束
 

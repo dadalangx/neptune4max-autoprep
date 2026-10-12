@@ -21,6 +21,7 @@
 | `source/klipper_tmc_autotune/` | 固定上游基线加 Python 2/旧 Klipper 适配的第三方插件 |
 | `source/moonraker/metadata.py` | 旧 Moonraker 元数据参考文件；包含厂商预览接口和 Bambu 解析改动 |
 | `source/klipper/klippy/extras/gcode_move.py` | 既有原厂坐标实现，仅供离线回归；本方案不要求替换它 |
+| `source/klipper/klippy/extras/controller_fan.py` | 旧版驱动风扇参考模块；只合并空加热器名称过滤，避免覆盖其他版本实现 |
 | `config/reference/` | 参考机功能配置及父配置节选；按目标机器合并和标定 |
 
 ## Linux MCU 源码与构建
@@ -54,6 +55,21 @@
 这些不是通过升级 Python 解决的。参考 X/Y/挤出机启用 autotune，两个 Z 未启用；插件根据输入电机数据计算参数，**不会自行测量电阻或电感**。父配置中自定义 X/Y 电机常量也需一起读取，近似 QIDI 挤出机条目不得当成实际原厂电机规格。
 
 不要运行上游滚动版 `install.sh` 后假设本补丁必然匹配。先固定基线并在隔离副本检查差异，再按目标解释器和接口验证。
+
+## 驱动专用散热风扇的旧版兼容
+
+硬件将驱动散热风扇从 FAN6/PC7 移至 FAN4/PA8 后，在主配置中加载 `config/reference/driver_cooling.cfg` 对应内容。它独立监控 `stepper_x, stepper_y, stepper_z, stepper_z1, extruder`，保持 PC7 的 `[heater_fan fan1]` 设置及 PB7/PC9 模型风扇路由。
+
+参考旧版 `configfile.getlist()` 把空 `heater:` 解析成 `("",)`，原 controller_fan 会查找名称为空的加热器而报错。因此在 `controller_fan.py` 读取列表时过滤空名称：
+
+```python
+self.heater_names = [
+    n for n in config.getlist("heater", ("extruder",)) if n]
+```
+
+这保留默认 extruder 和有效加热器列表的行为，同时允许电机专用散热。改动兼容 Python 2，不需要升级环境。补丁为 [controller-fan-empty-heater.patch](../patches/controller-fan-empty-heater.patch)，基线和哈希见 `patches/baselines.json`。目标版本若已经正确支持空列表，则无需重复修改；不同源码先比较并合并这处必要逻辑。
+
+备份被修改的源码、主配置以及原风扇配置，在机器空闲时加载。源码已经被进程导入时，普通 G-code `RESTART` 不保证重新导入 Python 模块；按实际服务方式重启 Klipper 进程并检查 Ready，避免仍运行缓存旧实现。日后更新或覆盖源码时，也应重新核对该兼容点。
 
 ## Moonraker 元数据
 

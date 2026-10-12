@@ -4,6 +4,8 @@
 
 autotune固定上游191d1bfd69336d05de1d7f3907937e32a21b616d。futuredivision防Py2整数截断，signature/getargspec回退、Enum替代、旧TstepHelper/TOFF兼容。X/Y/挤出机启用，Z两个未启用。近似QIDI数据库项不证明机主换了挤出机；读取自定义电机常量并核对真实电机。只适配需要的源码，不升级解释器来掩盖接口差异。
 
+驱动专用controller_fan在FAN4/PA8，heater留空。参考旧getlist把空字符串解析成("",)，需在controller_fan.py读取heater_names时过滤空项；保留默认和有效加热器列表。对应source和固定基线patch见docs/software.md。目标已支持空列表则不重复打补丁；已导入模块的源码变动需重启实际Klipper进程才能可靠重新加载，不凭G-code RESTART推断代码已更新。
+
 **Linux MCU**：参考机活动二进制为Tap版、哈希d34a7fd4...，磁盘C源为stock4a4a0e95...。仓库定制C2d2a55b0...来自旧项目保留副本；不要从参考机磁盘原C构建。独立构建目录使用兼容完整Klipper树、Tap补丁、Linux process配置，检查Tap命令字典、签名、aarch64及服务实际路径。服务参考名klipper_mcu，SysV生成；备份并配套恢复程序/模块/config，不假定systemd unit路径。
 
 PA11原厂探针继续归零/网格/Z_TILT；probe.z_offset0是参考raw坐标体系，与手动-2基线协同，不能给目标仅改z_offset0。原厂启动SET_KINEMATIC_POSITION可能产生虚假homed标志，实体测试需真实归零。

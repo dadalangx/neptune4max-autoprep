@@ -9,6 +9,7 @@
 | autotune插件及电机数据库 | Andrew McGregor及贡献者的 [klipper_tmc_autotune](https://github.com/andrewmcgr/klipper_tmc_autotune)，`191d1bfd69336d05de1d7f3907937e32a21b616d` 加旧环境兼容补丁 | GPLv3；motor_database是上游参考数据，实际电机需匹配 |
 | 3MF内3DBenchy | Daniel Norée / Creative Tools，[3DBenchy](https://www.3dbenchy.com/) | 官方[当前许可页](https://www.3dbenchy.com/license/)为CC0 1.0；本项目注明出处，模型不是本项目原创 |
 | Bambu Studio项目参数与首尾G-code | 机主提供，基于Bambu内置Elegoo Neptune 4 Max预设并修改 | 仅分发项目设置与文本，未打包Bambu软件或整套厂商预设库；基础预设出处保留 |
-| 主板/模块引脚资料 | 机主提供的ZNP K1图、[MKS官方硬件仓库](https://github.com/makerbase-mks/MKS-StepStick-Driver) | 本仓库以文字列出已核对引脚，未重新打包整套厂家图纸 |
+| 主板/模块引脚资料 | 机主提供的原厂主板接线图与ZNP K1 V2.0引脚布局图、[MKS官方硬件仓库](https://github.com/makerbase-mks/MKS-StepStick-Driver) | 两张图作为接线参考，原作者/厂商的权利与原许可保留，不因收录到本仓库而改为本项目原创或重新授权为GPL |
+| 擦嘴条安装及E1 UART跳线照片 | 机主提供并授权随项目发布，位于docs/images/ | 照片说明实际装配，发布副本移除拍摄元数据，图像像素不变 |
 
 项目资料由机主与Codex协作整理。现有原厂暂停、断料、PLR、灯光和共振能力不作为本项目原创成果宣传。代码构建及接口基线详见软件说明与manifest。
