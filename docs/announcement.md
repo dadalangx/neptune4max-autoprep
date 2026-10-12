@@ -2,11 +2,11 @@
 
 ## GitHub 项目简介
 
-海王星 Neptune 4 Max 改装参考：独立双Z、ADXL喷嘴Z偏移、A1硅胶条擦嘴、自适应床网、独立驱动散热、Bambu Studio适配，以及供Codex等智能体使用的skill。
+Neptune 4 Max AutoPrep：海王星4Max打印准备自动化改进，包含独立双Z、自动Z偏移、A1硅胶条擦嘴、自适应床网、独立散热与Bambu Studio适配，提供源码、参考配置和AI skill。
 
 ## 中文发布帖
 
-把自己的海王星4Max改装过程整理成了开源项目，分享给同样想折腾这台大尺寸打印机的朋友。
+把自己的海王星4Max改装过程整理成了开源项目 **Neptune 4 Max AutoPrep**，围绕打印准备自动化分享给同样想折腾这台大尺寸打印机的朋友。
 
 这套方案保留原厂工具头、热端、挤出机、电机和热床，在原厂软件环境上逐步增加独立双Z、打印前龙门校正、ADXL喷嘴接触测量Z偏移、硅胶条擦嘴、自适应床网、独立辅助风扇及驱动专用散热风扇。还整理了冷拔维护宏、主风扇比例映射、Bambu文件元数据适配，以及旧Python环境的兼容改动。
 
@@ -20,7 +20,7 @@
 
 目前完整组合来自一台实际使用的改装机，还没有在第二台原装4Max完成整套复刻验收。欢迎分享脱敏环境报告、接线照片、复刻结果和适配补丁，一起把支持范围做实。
 
-项目：https://github.com/dadalangx/neptune4max-ai-mods
+项目：https://github.com/dadalangx/neptune4max-autoprep
 
 ## 首版发布说明
 
