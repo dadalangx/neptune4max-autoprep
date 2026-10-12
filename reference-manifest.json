@@ -92,10 +92,10 @@
     {
       "path": "config/reference/adaptive_bed_mesh.cfg",
       "source_path": "/home/mks/klipper_config/adaptive_bed_mesh.cfg",
-      "reference_sha256": "eda5cc715b18e2f5cf0544cc2b8e1f560a773622235eb1c35cc2a71aae4dc8a6",
-      "date": "2026-10-11",
+      "reference_sha256": "d47df877523b9bdcfdd22fa553b462d28d96618bb2526968b80e781ee810868d",
+      "date": "2026-10-13",
       "role": "modified-machine-reference; not a stock baseline",
-      "published_sha256": "eda5cc715b18e2f5cf0544cc2b8e1f560a773622235eb1c35cc2a71aae4dc8a6"
+      "published_sha256": "6e1615ad35619201f5e2f6b0377a71bf58b272979fd71d7f4f4b8dc73d42d805"
     },
     {
       "path": "config/reference/bambu_aux_fan.cfg",
@@ -179,6 +179,22 @@
       "date": "2026-10-12",
       "role": "assembly photo or wiring/pin reference; see THIRD_PARTY.md",
       "published_sha256": "74d07ea1ab235ba97d0be2dd01f784809883e36a6a4c0a18e4da240dc2a54e29"
+    },
+    {
+      "path": "source/klipper/klippy/extras/adaptive_mesh_drift.py",
+      "source_path": "/home/mks/klipper/klippy/extras/adaptive_mesh_drift.py",
+      "date": "2026-10-13",
+      "role": "Python2 center-reference time interpolation; live 4x4 validated",
+      "reference_sha256": "f44a7096d2c7cc39ddd390c790e06f52730d659a99af8bf70ce39457a39afe2e",
+      "published_sha256": "f44a7096d2c7cc39ddd390c790e06f52730d659a99af8bf70ce39457a39afe2e"
+    },
+    {
+      "path": "tests/fixtures/vendor-bed-mesh-3387a9c2.py",
+      "source_path": "/home/mks/klipper/klippy/extras/bed_mesh.py",
+      "date": "2026-10-13",
+      "role": "unmodified reference source; offline tests only, do not install",
+      "reference_sha256": "c8ec361ae34d7f674b11e523292218c8bc2a05b7a87ca95ba28f26191bb1d906",
+      "published_sha256": "c8ec361ae34d7f674b11e523292218c8bc2a05b7a87ca95ba28f26191bb1d906"
     }
   ],
   "versions": {
@@ -209,5 +225,25 @@
     "release_delay_seconds": 60,
     "software_output_off_observed_after_seconds": 63,
     "unrelated_active_settings_unchanged": true
+  },
+  "adaptive_mesh_drift_validation": {
+    "date": "2026-10-13",
+    "condition_seconds": 180,
+    "reference_probe_xy": [
+      215.0,
+      215.0
+    ],
+    "reference_interval": 5,
+    "reference_samples": 3,
+    "reference_result": "median",
+    "interpolation": "piecewise-linear in Klipper print-time",
+    "python2_offline_tests": 10,
+    "actual_xy_mesh_points": 16,
+    "actual_added_references": 4,
+    "last_partial_group_checked": true,
+    "native_matrix_independently_verified": true,
+    "native_bed_mesh_probe_sources_unchanged": true,
+    "full_print_with_drift_correction_verified": false,
+    "second_stock_printer_verified": false
   }
 }

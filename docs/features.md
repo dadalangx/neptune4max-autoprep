@@ -8,7 +8,7 @@ flowchart TD
     B --> C[PA11 真实归零与高位无接触检查]
     C --> D[独立双 Z 倾斜调整 / 再归零 Z]
     D --> E[应用擦嘴临时基线 / 排料 / 两轮擦嘴]
-    E --> F[清除临时偏移 / PA11 自适应床网]
+    E --> F[清除临时偏移 / PA11 自适应床网与参考漂移修正]
     F --> G[一次性会话校验 / PA11 同点粗定位]
     G --> H[ADXL 三次喷嘴接触取中位数]
     H --> I[减接触点床网值 / 应用临时 Z offset]
@@ -68,6 +68,8 @@ ADXL bed heat soak: bed=69.6/70.0C stable=120/300s
 PA11 范围与探点不随机。按首层包围框外扩 10mm，并与 ADXL 中心±3mm加 0.25mm 量化余量的区域取并集，再限制到可测范围。动态 3～15 点，较小网格用 lagrange，较大用 bicubic；无有效范围回退安全全床 6×6。
 
 PA 校准文件只有明确 `PA_LINE_CALIBRATION_START/END` 段才从实际正向挤出线段解析范围；普通模型继续使用切片变量。`ADAPTIVE_MESH_RESOLVE` 由 `adxl345_z_offset.py` 注册，单独复制 adaptive cfg 会缺命令。若只要床网，AI 需拆出独立注册模块并验证，而不是假设它已经独立。
+
+自适应扫描现已加入固定中心参考的时间插值修正：近床等待180秒，初始三次中位数基准，每5点补测中心，末组同样补测；修正点交给原生床网生成，不改全局Z offset。该等待与前面的300秒热床稳定分开。原生 `BED_MESH_CALIBRATE` / G29 保持原流程，全床修正版使用独立命令。算法、坐标、命令与边界见[中心参考温漂修正](adaptive-mesh-drift.md)，部署与验收见[智能体步骤](../skills/neptune4max-mods/references/adaptive-mesh-drift.md)。
 
 ## 风扇、冷拔与层数
 

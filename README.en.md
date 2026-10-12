@@ -13,7 +13,7 @@ The owner confirms that the reference printer works normally. The complete setup
 | Independent dual Z | Automatically aligns the two sides of the gantry before printing |
 | Automatic nozzle Z offset | Measures the first-layer height reference after cleaning the nozzle |
 | Automated print preparation | Connects bed stabilization, purging, silicone wiping, and calibration |
-| Adaptive bed mesh | Probes the area needed for the current model |
+| Adaptive mesh with drift correction | Probes the model area and uses center references to reduce drift during scanning |
 | Improved fan control | Independent auxiliary cooling, automatic driver cooling, and adjustable main fan output |
 | Cold-pull maintenance | Runs a defined maintenance sequence using a macro or G-code file |
 | Bambu Studio support | Supplies a reference project and start/end code, with improved web interface metadata recognition |

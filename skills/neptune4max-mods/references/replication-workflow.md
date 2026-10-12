@@ -51,7 +51,7 @@ flowchart TD
 | 驱动散热 | FAN4 接线、电机列表、旧版空 heater 列表兼容 | `driver_cooling.cfg`，必要时合并 controller_fan 最小修正 | P5 电气检查；未装双 Z 时不引用不存在的 stepper_z1 |
 | ADXL 喷嘴 offset | 工具头传感器、匹配 Tap Linux MCU/主机模块、PA11 同点基准、覆盖接触区域的床网 | `adxl345_z_offset.cfg`、Tap C/Python、相关解析模块 | [P6 ADXL](commissioning-and-calibration.md#p63adxl-喷嘴-offset) |
 | 自动擦嘴与完整准备 | 擦嘴条/路径标定、热稳定、一次性会话；有双 Z 时处理包装宏加载顺序 | 开始代码、ADXL 配置与所选双 Z 包装 | [P6 擦嘴](commissioning-and-calibration.md#p62擦嘴位置与床网几何)、P6 ADXL、P7 |
-| 自适应床网 | PA11、可达范围、范围解析入口；与 ADXL 同用时覆盖随机接触区域 | `adaptive_bed_mesh.cfg` 的 resolver 目前由 ADXL Python 注册 | P6 床网、P7；仅床网方案需独立适配注册入口 |
+| 自适应床网与参考温漂修正 | PA11、原生旧版床网/probe接口、可达中心、真实归位、范围解析入口；与ADXL同用时覆盖随机接触区域 | `adaptive_bed_mesh.cfg` 与 `adaptive_mesh_drift.py`；resolver 仍由ADXL注册 | [温漂模块D1～D5](adaptive-mesh-drift.md)、P6床网及P7；仅床网方案需独立适配resolver |
 | autotune_tmc | 实际电机数据、Python/旧 Klipper 接口，不用近似电机名称代替规格 | 固定上游的适配源码与父配置 motor_constants | [P6 可选功能](commissioning-and-calibration.md#p64可选调参元数据与冷拔) |
 | Bambu 元数据 | 目标 Moonraker 元数据接口、服务用户、预览目录权限 | `source/moonraker/metadata.py` 中必要差异 | P7 文件上传和界面，不需要运动 |
 | 冷拔 | 辅助风扇、材料温度、挤出与行程限制、提示音输出 | `cold_pull.cfg` 或展开的维护 G-code | P6 可选功能，独立验收，不自动纳入每次打印 |

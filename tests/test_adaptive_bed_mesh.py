@@ -68,7 +68,7 @@ class AdaptiveBedMeshMacroTests(unittest.TestCase):
             self.assertIn('params.' + name, MACRO)
         self.assertIn('params.PROFILE | default("adaptive")', MACRO)
         self.assertIn('params.PLAN_ONLY | default(0)', MACRO)
-        self.assertIn('BED_MESH_CALIBRATE PROFILE={profile}', MACRO)
+        self.assertIn('ADAPTIVE_MESH_DRIFT_CALIBRATE PROFILE={profile}', MACRO)
 
     def test_pa11_mesh_has_no_random_fuzz_and_reserves_contact_square(self):
         self.assertNotIn('| random', MACRO)

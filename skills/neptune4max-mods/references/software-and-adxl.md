@@ -20,4 +20,6 @@ offset=median_tap_z-mesh_at_actual_contact_xy+trim，MOVE0临时应用，不加�
 
 自适应mesh保留接触中心±3+0.25余量，PA11网格不随机。3～15点、小lagrange/大bicubic、无有效bbox回退6x6。ADAPTIVE_MESH_RESOLVE是adxl345_z_offset.py注册；只选mesh需拆出独立入口。PA校准只解析显式PA_LINE_CALIBRATION_START/END正挤出线段，普通模型使用Bambu变量，不凭文件名猜。
 
+新adaptive_mesh_drift.py在扫描前中心近床保持180秒，每5点追加独立三次中位数参考，以相邻参考按Klipper print-time插值，扣除公共漂移；末组不足5点同样补测。reference_position是探针床面坐标，不能直接抄ADXL喷嘴坐标。原生BED_MESH_CALIBRATE/G29保持不变；全床修正版为ADAPTIVE_MESH_DRIFT_CALIBRATE。部署/兼容/实际矩阵验收与回退按[专题步骤](adaptive-mesh-drift.md)，不是全局Z offset补丁。
+
 adxl345.py和metadata补丁含厂商已有差异，先比较目标接口而非盲覆盖；gcode_move.py仅测试参考。项目没有要求替换原bed_mesh/G28。旧完整Tap归零/床网原型已弃用，不从历史项目恢复它。

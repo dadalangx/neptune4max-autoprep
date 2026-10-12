@@ -12,4 +12,6 @@
 | 主板/模块引脚资料 | 机主提供的原厂主板接线图与ZNP K1 V2.0引脚布局图、[MKS官方硬件仓库](https://github.com/makerbase-mks/MKS-StepStick-Driver) | 两张图作为接线参考，原作者/厂商的权利与原许可保留，不因收录到本仓库而改为本项目原创或重新授权为GPL |
 | 擦嘴条安装及E1 UART跳线照片 | 机主提供并授权随项目发布，位于docs/images/ | 照片说明实际装配，发布副本移除拍摄元数据，图像像素不变 |
 
+新增 `adaptive_mesh_drift.py` 为本项目GPLv3模块。`tests/fixtures/vendor-bed-mesh-3387a9c2.py` 是参考机Klipper厂商树的未改动床网源码快照，用于离线测试原生矩阵生成，保留原版权；不得当作需要安装或覆盖目标机的文件。
+
 项目资料由机主与Codex协作整理。现有原厂暂停、断料、PLR、灯光和共振能力不作为本项目原创成果宣传。代码构建及接口基线详见软件说明与manifest。

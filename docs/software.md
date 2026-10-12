@@ -30,6 +30,7 @@
 | `source/klipper/klippy/extras/adxl345_tap.py` | 对应 Klipper `klippy/extras/`，提供 Linux MCU Tap endstop 和测量核心 |
 | `source/klipper/klippy/extras/adxl345_z_offset.py` | 同上，注册打印前 offset、检查/准备命令与 adaptive resolver |
 | `source/klipper/klippy/extras/adaptive_mesh_bounds.py` | 同上，PA 校准几何解析辅助模块 |
+| `source/klipper/klippy/extras/adaptive_mesh_drift.py` | 同上，中心参考时间插值修正；需合并对应adaptive cfg，不替换原生床网/probe |
 | `source/klipper/klippy/extras/adxl345.py` | 参考机主机端驱动；含厂商分支差异，应比较后合并，不能默认替换其他版本 |
 | `source/klipper/src/sensor_adxl345.c` | **定制 Tap 构建源码**，需要编译 Linux MCU |
 | `source/klipper/linuxprocess.config` | 最小 Linux process 构建选择，不是 STM32 主板配置 |
@@ -91,6 +92,10 @@ self.heater_names = [
 补齐 BaseSlicer 的预览接口回退和 BambuStudio 识别，解析总层数、首层高度、模型高度等。补丁相对 `bdd0222a1cec451fe3bf37e721cca7409877bf61`，但它包含参考机器预先存在的厂商差异。**补丁用途是帮助比较，不能宣称所有差异都是本项目新增代码。** 在其他 Moonraker 上应按接口合并最小改动。
 
 历史 `.thumbs` 权限问题通过修复该目录所有者处理，不意味着需要对整棵 gcode 目录递归 chmod/chown。确认实际服务用户和目录权限后处理具体目录即可。
+
+## 自适应床网参考温漂修正
+
+2026-10-13新增Python2兼容模块，未升级Klipper/Python/MCU。它依赖当前旧版bed_mesh/probe及实际归位事件接口，在其他版本先比较；只支持自动矩形网格、无faulty_regions。`tests/fixtures/vendor-bed-mesh-3387a9c2.py`是离线矩阵验证fixture，不是安装/替换文件。详细参数和调用见[专题文档](adaptive-mesh-drift.md)，完整备份、部署、小网格测试和回退见[智能体步骤](../skills/neptune4max-mods/references/adaptive-mesh-drift.md)。
 
 ## 配置依赖
 
