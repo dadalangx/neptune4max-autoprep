@@ -17,5 +17,8 @@
   "four_hardware_images_included": true,
   "jpeg_metadata_removed_without_pixel_changes": true,
   "reference_z_side_mapping_owner_confirmed": true,
-  "recipient_z_side_verification_required": true
+  "recipient_z_side_verification_required": true,
+  "real_home_required_after_power_on_or_klipper_restart": true,
+  "startup_coordinates_and_homed_axes_not_accepted_as_home_evidence": true,
+  "unhomed_manual_moves_and_web_mesh_calibration_warning_documented": true
 }

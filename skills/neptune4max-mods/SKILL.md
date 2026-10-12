@@ -13,6 +13,14 @@ description: Adapt or troubleshoot the Neptune 4 Max ZNP K1 V2.0 modification pr
 
 先读取实际服务解释器、原厂版本、dirty源码、主板/模块型号、include与宏冲突。参考环境Klipper Python2.7.16、Moonraker Python3.7.3。保留目标原厂软件，默认不升级系统、Klipper、Moonraker或Python，不用改装机哈希充当原装白名单。`tools/preflight.sh`是可选只读盘点工具，不是安装器。
 
+## 每次启动后的运动前置条件
+
+每次打印机上电、G-code `RESTART` / `FIRMWARE_RESTART` 或Klipper进程/服务重启后，将真实归位状态视为未确认。原厂启动流程可能用`SET_KINEMATIC_POSITION`写入默认坐标；Ready、界面坐标和`toolhead.homed_axes`均不能单独证明真实归位。
+
+执行后续任何XYZ移动前，必须先在已授权且归位路径、余量、探针及接线条件已确认的情况下完成真实三轴`G28`，并确认它成功结束。以本次启动内实际执行成功的归位记录或用户确认其已真实归位作为证据；不以写入坐标、强制移动或伪造homed标志替代。归位本身也是实体运动，条件不满足、归位失败或新增驱动方向尚无法确认时，停止后续移动并先协调用户检查，不盲目归位或先移动到猜测的安全位置。同一次启动内有效归位后可继续移动；再次重启就重新确认。
+
+提醒用户：上电后尚未真实归位时，不要随意操作工具头移动，也不要点击网页端“校准床网补偿”按钮。首次双Z侧别/方向测试、擦嘴、探测及床网都遵守这条前置条件。只读盘点和不产生XYZ运动的风扇/寄存器检查不需要为了检查而自动归位。详见项目docs/validation.md的归位规则。
+
 ## 按任务读取资料
 
 - 双Z、驱动、风扇或擦嘴：读[硬件和几何](references/hardware-and-geometry.md)，再读项目docs/hardware.md与相关cfg。

@@ -8,7 +8,7 @@ autotune固定上游191d1bfd69336d05de1d7f3907937e32a21b616d。futuredivision防
 
 **Linux MCU**：参考机活动二进制为Tap版、哈希d34a7fd4...，磁盘C源为stock4a4a0e95...。仓库定制C2d2a55b0...来自旧项目保留副本；不要从参考机磁盘原C构建。独立构建目录使用兼容完整Klipper树、Tap补丁、Linux process配置，检查Tap命令字典、签名、aarch64及服务实际路径。服务参考名klipper_mcu，SysV生成；备份并配套恢复程序/模块/config，不假定systemd unit路径。
 
-PA11原厂探针继续归零/网格/Z_TILT；probe.z_offset0是参考raw坐标体系，与手动-2基线协同，不能给目标仅改z_offset0。原厂启动SET_KINEMATIC_POSITION可能产生虚假homed标志，实体测试需真实归零。
+PA11原厂探针继续归零/网格/Z_TILT；probe.z_offset0是参考raw坐标体系，与手动-2基线协同，不能给目标仅改z_offset0。参考原厂启动延迟宏KINEMATIC_POSITION用SET_KINEMATIC_POSITION赋X110/Y110/Z0，可产生与真实位置不符的坐标和homed标志；触摸屏是否参与未单独确认。每次上电或重启Klipper后，任何后续XYZ移动前必须确认本次启动的真实三轴G28成功，不能靠Ready或homed_axes放行。归位路径/余量/接线/探针不满足时先协调用户处理，禁止盲归位或强制移动绕过。
 
 ADXL工具头spidev0.0、axes_map x,z,-y，rawY检测Z Single Tap，Linux MCU C 2kHz轮询trsync停主MCU步进；存在跨MCU延迟。配方代码校验25mm/s、300mm/s²、1.75g、20msDUR、2kHz、120ms武装延迟，配置与源码同步，不任意改一项。
 
