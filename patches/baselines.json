@@ -1,0 +1,29 @@
+[
+  {
+    "patch": "patches/adxl-linux-mcu.patch",
+    "upstream": "Klipper3d/klipper",
+    "commit": "3387a9c23d940c7d449f197b272616eda11a5e3d",
+    "target": "src/sensor_adxl345.c",
+    "before_sha256": "4a4a0e9509dfffe14cc9724ee73c7d4016be4a15177ddf71504a5d84dd8c7f7b",
+    "after_sha256": "2d2a55b0dc191fe99b90c5be6c88442181325596e96329b397541248d7630287",
+    "note": "Custom Tap C source from original project. Active printer source is stock; the installed Linux MCU binary is custom. Compile this patched source."
+  },
+  {
+    "patch": "patches/adxl345-reference-vs-upstream.patch",
+    "upstream": "Klipper3d/klipper",
+    "commit": "3387a9c23d940c7d449f197b272616eda11a5e3d",
+    "target": "klippy/extras/adxl345.py",
+    "before_sha256": "898c33c3f8beb4fe2c6516557411ad72866ddb024ed5a546f9dd98b0a6f107c5",
+    "after_sha256": "4c5d2c373c4577ada0fdc8686f30b7f5223f67810817e40ac63bf5aa49f56a2c",
+    "note": "Compare with vendor target; snapshots may include pre-existing vendor changes."
+  },
+  {
+    "patch": "patches/moonraker-metadata-reference-vs-upstream.patch",
+    "upstream": "Arksine/moonraker",
+    "commit": "bdd0222a1cec451fe3bf37e721cca7409877bf61",
+    "target": "moonraker/components/file_manager/metadata.py",
+    "before_sha256": "6c9daf235db72069e03db47e2f8cd608ad5685d3b06e7cdbc4e761327bd2541b",
+    "after_sha256": "73b96d3469babf4d7ebad5e5b66d09bf21aaccf0a58ee5d3a195477c6b6f6e29",
+    "note": "Compare with vendor target; snapshots may include pre-existing vendor changes."
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "note": "Source snapshots are modified reference machine artifacts, not a stock compatibility allowlist.",
+  "artifacts": [
+    {
+      "path": "source/klipper/klippy/extras/adxl345_tap.py",
+      "source_path": "/home/mks/klipper/klippy/extras/adxl345_tap.py",
+      "reference_sha256": "6ff1d5456a3f29d93d0bb7eef361dcf85877cd0eab9145130353d152590275bb",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "6ff1d5456a3f29d93d0bb7eef361dcf85877cd0eab9145130353d152590275bb"
+    },
+    {
+      "path": "source/klipper/klippy/extras/adxl345_z_offset.py",
+      "source_path": "/home/mks/klipper/klippy/extras/adxl345_z_offset.py",
+      "reference_sha256": "4baf8d51fe335de7b4c765cffab9cb5d3b190a80b9f18d317e4b725424025f31",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "4baf8d51fe335de7b4c765cffab9cb5d3b190a80b9f18d317e4b725424025f31"
+    },
+    {
+      "path": "source/klipper/klippy/extras/adaptive_mesh_bounds.py",
+      "source_path": "/home/mks/klipper/klippy/extras/adaptive_mesh_bounds.py",
+      "reference_sha256": "1f747fcc4e1c647c2c43d1e11470636e89f564ef9d21295b38c6e8c17b3ae59a",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "1f747fcc4e1c647c2c43d1e11470636e89f564ef9d21295b38c6e8c17b3ae59a"
+    },
+    {
+      "path": "source/klipper/klippy/extras/adxl345.py",
+      "source_path": "/home/mks/klipper/klippy/extras/adxl345.py",
+      "reference_sha256": "4c5d2c373c4577ada0fdc8686f30b7f5223f67810817e40ac63bf5aa49f56a2c",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "4c5d2c373c4577ada0fdc8686f30b7f5223f67810817e40ac63bf5aa49f56a2c"
+    },
+    {
+      "path": "source/klipper/klippy/extras/gcode_move.py",
+      "source_path": "/home/mks/klipper/klippy/extras/gcode_move.py",
+      "reference_sha256": "1509c05c57778bf2f4fb992bc1e27b9b1e56c6dcb01873b63698e2c062e6b54f",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "1509c05c57778bf2f4fb992bc1e27b9b1e56c6dcb01873b63698e2c062e6b54f"
+    },
+    {
+      "path": "source/klipper/src/sensor_adxl345.c",
+      "source_path": "original-project/klipper-src-20260905/src/sensor_adxl345.c",
+      "date": "2026-10-11",
+      "role": "custom build source from original project, NOT current printer disk source",
+      "published_sha256": "2d2a55b0dc191fe99b90c5be6c88442181325596e96329b397541248d7630287",
+      "printer_disk_source_sha256": "4a4a0e9509dfffe14cc9724ee73c7d4016be4a15177ddf71504a5d84dd8c7f7b"
+    },
+    {
+      "path": "source/klipper_tmc_autotune/autotune_tmc.py",
+      "source_path": "/home/mks/klipper/klippy/extras/autotune_tmc.py",
+      "reference_sha256": "3b8da2c31db19fd5240429db06bea347cfcd53f3aec3d5d86c82b5339300f852",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "3b8da2c31db19fd5240429db06bea347cfcd53f3aec3d5d86c82b5339300f852"
+    },
+    {
+      "path": "source/klipper_tmc_autotune/motor_constants.py",
+      "source_path": "/home/mks/klipper/klippy/extras/motor_constants.py",
+      "reference_sha256": "f74c463d8c38c7b78ea6df988a179a4aa40a3ce08132adda5ff4ecd33e4d8108",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "f74c463d8c38c7b78ea6df988a179a4aa40a3ce08132adda5ff4ecd33e4d8108"
+    },
+    {
+      "path": "source/klipper_tmc_autotune/motor_database.cfg",
+      "source_path": "/home/mks/klipper/klippy/extras/motor_database.cfg",
+      "reference_sha256": "a6f1043ae7eeaeceb6c1c0764d28842186a6b5e63c8cfb7a744b2877f5ca20dc",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "a6f1043ae7eeaeceb6c1c0764d28842186a6b5e63c8cfb7a744b2877f5ca20dc"
+    },
+    {
+      "path": "source/moonraker/metadata.py",
+      "source_path": "/home/mks/moonraker/moonraker/components/file_manager/metadata.py",
+      "reference_sha256": "73b96d3469babf4d7ebad5e5b66d09bf21aaccf0a58ee5d3a195477c6b6f6e29",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "73b96d3469babf4d7ebad5e5b66d09bf21aaccf0a58ee5d3a195477c6b6f6e29"
+    },
+    {
+      "path": "config/reference/adxl345_z_offset.cfg",
+      "source_path": "/home/mks/klipper_config/adxl345_z_offset.cfg",
+      "reference_sha256": "fd618f989a5959e733ac9b35da3739360de48bbb5b52273d20b5f98f9a237f85",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "fd618f989a5959e733ac9b35da3739360de48bbb5b52273d20b5f98f9a237f85"
+    },
+    {
+      "path": "config/reference/adaptive_bed_mesh.cfg",
+      "source_path": "/home/mks/klipper_config/adaptive_bed_mesh.cfg",
+      "reference_sha256": "eda5cc715b18e2f5cf0544cc2b8e1f560a773622235eb1c35cc2a71aae4dc8a6",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "eda5cc715b18e2f5cf0544cc2b8e1f560a773622235eb1c35cc2a71aae4dc8a6"
+    },
+    {
+      "path": "config/reference/bambu_aux_fan.cfg",
+      "source_path": "/home/mks/klipper_config/bambu_aux_fan.cfg",
+      "reference_sha256": "e48947bc7de521a4d7573ad2561d33315b378e7a68c2a4ded54d70bd34453e43",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "e48947bc7de521a4d7573ad2561d33315b378e7a68c2a4ded54d70bd34453e43"
+    },
+    {
+      "path": "config/reference/cold_pull.cfg",
+      "source_path": "/home/mks/klipper_config/cold_pull.cfg",
+      "reference_sha256": "6ddc73faa4d254d54948b4cf587de98c9e0e1faa385408718005fc2039b3ebee",
+      "date": "2026-10-11",
+      "role": "modified-machine-reference; not a stock baseline",
+      "published_sha256": "6ddc73faa4d254d54948b4cf587de98c9e0e1faa385408718005fc2039b3ebee"
+    },
+    {
+      "path": "slicer/start_gcode.txt",
+      "source": "owner-provided",
+      "sha256": "0b3b3f02930b04dc4a85e7dfd942e18fc5363b2516b1c69807c2afc23a0f59e7",
+      "date": "2026-10-12",
+      "published_sha256": "0b3b3f02930b04dc4a85e7dfd942e18fc5363b2516b1c69807c2afc23a0f59e7"
+    },
+    {
+      "path": "slicer/end_gcode.txt",
+      "source": "owner-provided",
+      "sha256": "49cbf3dbaa6dda87d287818bee143f3f0394b95cd03f154d296323b92336f1c9",
+      "date": "2026-10-12",
+      "published_sha256": "49cbf3dbaa6dda87d287818bee143f3f0394b95cd03f154d296323b92336f1c9"
+    },
+    {
+      "path": "config/reference/independent_dual_z.cfg",
+      "date": "2026-10-12",
+      "reference_sha256": "f80402c8884ebd31142bdead767ba4dbbeb203c7a0e21c3b4ba717b48a755135",
+      "driver": "MKS TMC2209 V2.0",
+      "sense_resistor": 0.11,
+      "motor_side_mapping": "historical tested layout; must reverify on each recipient machine",
+      "published_sha256": "f80402c8884ebd31142bdead767ba4dbbeb203c7a0e21c3b4ba717b48a755135"
+    }
+  ],
+  "versions": {
+    "klipper": "v0.10.0-530-g3387a9c2-dirty",
+    "klipper_head": "3387a9c23d940c7d449f197b272616eda11a5e3d",
+    "moonraker": "v0.7.1-609-gbdd0222-dirty",
+    "moonraker_head": "bdd0222a1cec451fe3bf37e721cca7409877bf61",
+    "autotune_head": "191d1bfd69336d05de1d7f3907937e32a21b616d",
+    "klipper_python": "2.7.16",
+    "moonraker_python": "3.7.3"
+  },
+  "linux_mcu_reference": {
+    "sha256": "d34a7fd4cb6d84a8713eaeee36b2cd19efc40c615ffdc5b88db4900e176c0ee3",
+    "arch": "aarch64",
+    "distributed_binary": false,
+    "service": "klipper_mcu (SysV generated)",
+    "local_deployment_binary_matches_live_hash": true,
+    "source_origin": "original project custom C snapshot; live source was restored to stock"
+  },
+  "stock_install_certified": false
+}

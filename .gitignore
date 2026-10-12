@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+private/
+backups/
+*.log
+.env
+preflight-report*.json
+*.private.json

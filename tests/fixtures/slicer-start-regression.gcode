@@ -1,0 +1,123 @@
+M400 ; 等待运动队列清空
+M220 S100
+M221 S100
+
+; 恢复printer.cfg运动基准，避免上一任务末尾的M204等模态状态泄漏到本次擦嘴、归位和探测。
+SET_VELOCITY_LIMIT VELOCITY=500 ACCEL=2000 ACCEL_TO_DECEL=20000 SQUARE_CORNER_VELOCITY=9
+
+G90
+SET_SKEW CLEAR=1 ; 不启用偏斜矫正
+
+; 先在任何挤出动作前完成热稳定、PA11归零和高位无接触检查。
+; PREPARE_WIPE设置一次性擦嘴会话，并应用-2.0mm临时基线供硅胶条定位；尚不碰床。
+ADXL_Z_OFFSET_PREPARE_WIPE COUNT=1 BED_TEMP=[bed_temperature_initial_layer_single] SOAK=300
+
+; 保持PREPARE_WIPE结束时的Y位置（通常在床中心附近），只移动X到0后悬空排料。
+; 不再移动到X0/Y0角落，避免拉断时把垂线带进热床底部。
+; 擦料温度由Bambu Studio按“当前打印文件首层温度+10°C”计算。
+; 使用相对挤出，避免依赖进入本段前的E坐标。
+G1 Z10 F300
+G1 X0 F6000
+M109 S{nozzle_temperature_initial_layer[initial_extruder] + 10}
+M83
+G1 E100 F180
+
+; 工具头保持Z10和准备阶段留下的Y位置，利用热床左侧边缘拦截悬垂料线。
+; 开始截断前开启最大模型风扇，一直保持到两轮硅胶擦拭全部结束。
+M106 S255
+; X0↔100高速往复三组，再增加一组X0↔200大行程拉断；未完全拉断也继续。
+G1 X100 F12000
+G1 X0 F12000
+G1 X100 F12000
+G1 X0 F12000
+G1 X100 F12000
+G1 X0 F12000
+G1 X200 F12000
+G1 X0 F12000
+
+; 拉断后回抽5mm（5mm/s），减少前往硅胶条时的渗料和糊头。
+G1 E-5 F300
+
+; X保持为0，沿左侧移动到硅胶条所在的Y=430。
+G1 Y430 F6000
+G1 X10 F3000
+G1 Z-0.5 F300
+
+; 在首层温度+10°C下擦拭：X10～X30以200mm/s高速往复五组。
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+
+; 停在硅胶条中心X20/Z-0.5保持接触，使用已在截断前开启的最大风扇降到140°C。
+G1 X20 F12000
+M104 S140
+TEMPERATURE_WAIT SENSOR=extruder MAXIMUM=142
+
+; 喷嘴降到140°C后，以同样的X10～X30/Z-0.5/200mm/s再擦拭五组。
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X30 F12000
+G1 X10 F12000
+G1 X20 F12000
+M106 S0
+G1 Z10 F300
+M400
+G4 P2000
+
+; 输出擦嘴后虚拟限位状态，便于区分短行程和传感器提前触发。
+QUERY_ENDSTOPS
+
+; 利用PREPARE_WIPE阶段的真实G28坐标先离开左端，制造明确且可观察的X归位行程。
+G1 X100 F6000
+M400
+G4 P2000
+
+; 分轴归位：先X后Y；不归位Z，避免在此处增加一次喷嘴碰床。
+G28 X
+G4 P2000
+G28 Y
+
+; 清除PREPARE_WIPE为硅胶条定位设置的-2.0mm临时基线，不产生物理移动。
+; 用Bambu Studio首层包围框生成本项目专用PA11自适应床网；10mm边距且不随机探点。
+; Bambu压力提前线校准若给出全床占位边界，固件入口会读取实际校准段（含标签）修正范围。
+; 宏会为ADXL中心±3mm接触区域及0.25mm步距量化余量预留覆盖，并保存adaptive profile。
+SET_GCODE_OFFSET Z=0 MOVE=0
+ADAPTIVE_BED_MESH X_MIN={first_layer_print_min[0]} Y_MIN={first_layer_print_min[1]} X_MAX={first_layer_print_max[0]} Y_MAX={first_layer_print_max[1]} MARGIN=10 PROFILE=adaptive
+; 使用准备阶段产生的一次性授权，在擦净的喷嘴上进行正式ADXL接触测量。
+; 高位无接触检查保持固定中心；只有真实三Tap在中心±3mm随机点进行，整组三Tap使用同一点。
+; SOAK必须为0且BED_TEMP必须与准备阶段一致；授权使用一次后立即失效。
+ADXL_Z_OFFSET PROFILE=adaptive BED_TEMP=[bed_temperature_initial_layer_single] SOAK=0 AFTER_WIPE=1 FUZZ=3
+; 在自动offset基础上抬高0.10mm；该值已通过首层验证。
+SET_GCODE_OFFSET Z_ADJUST=0.100 MOVE=0
+
+; ADXL结束时位于中心安全高度；先移动到原厂画线起点上方，再重新升温。
+G1 X165 Y0.5 F6000
+
+; 恢复打印文件的原首层温度，然后按原厂画线坐标绘制一条排料线。
+M109 S{nozzle_temperature_initial_layer[initial_extruder]}
+G90
+M83
+G92 E0
+
+G1 X165 Y0.5 Z0.4 F300
+G1 X265 E30 F400
+G1 Z0.6 F120.0
+G1 X260 F3000
+
+; 排料线完成后恢复切片模型使用的绝对挤出坐标。
+M82
+G92 E0

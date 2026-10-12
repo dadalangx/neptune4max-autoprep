@@ -1,0 +1,12 @@
+* text=auto
+*.py text eol=lf
+*.sh text eol=lf
+*.c text eol=lf
+*.cfg text eol=lf
+*.patch text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.gcode text eol=lf
+*.txt -text
+*.3mf binary

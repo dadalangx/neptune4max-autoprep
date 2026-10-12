@@ -1,0 +1,86 @@
+diff --git a/autotune_tmc.py b/autotune_tmc.py
+index 65a15f0..202788b 100644
+--- a/autotune_tmc.py
++++ b/autotune_tmc.py
+@@ -1,14 +1,37 @@
++from __future__ import division
++
+ import logging
+ import math
+ import os
+-from enum import Enum
+-from inspect import signature
++try:
++    from inspect import signature
++except ImportError:
++    import inspect
++
++    class _CompatSignature:
++        def __init__(self, function):
++            self.parameters = dict(
++                (name, None) for name in inspect.getargspec(function).args
++            )
++
++    def signature(function):
++        return _CompatSignature(function)
+ 
+ try:
+     from klippy.extras import tmc  # Kalico
+ except ImportError:
+     from . import tmc  # Klipper
+ 
++if not hasattr(tmc, "TMCtstepHelper"):
++    def _compat_tmc_tstep_helper(step_dist, mres, tmc_freq, velocity):
++        if velocity > 0.0:
++            step_dist_256 = step_dist / (1 << mres)
++            threshold = int(tmc_freq * step_dist_256 / velocity + 0.5)
++            return max(0, min(0xfffff, threshold))
++        return 0xfffff
++
++    tmc.TMCtstepHelper = _compat_tmc_tstep_helper
++
+ # Autotune config parameters
+ TUNING_GOAL = "auto"
+ EXTRA_HYSTERESIS = 0
+@@ -77,12 +100,19 @@ AUTO_PERFORMANCE_MOTORS = {
+ }
+ 
+ 
+-class TuningGoal(str, Enum):
++class TuningGoal(object):
+     AUTO = "auto"  # This is the default: automatically choose SILENT for Z and PERFORMANCE for X/Y
+     AUTOSWITCH = "autoswitch"  # Experimental mode that use StealthChop at low speed and switch to SpreadCycle when needed
+     SILENT = "silent"  # StealthChop at all speeds
+     PERFORMANCE = "performance"  # SpreadCycle at all speeds
+ 
++    def __new__(cls, value):
++        if value not in (
++            cls.AUTO, cls.AUTOSWITCH, cls.SILENT, cls.PERFORMANCE
++        ):
++            raise ValueError(value)
++        return value
++
+ 
+ class AutotuneTMC:
+     def __init__(self, config):
+@@ -303,7 +333,19 @@ class AutotuneTMC:
+         if register is None:
+             return
+         logging.info("autotune_tmc set %s %s=%s", self.name, field, repr(arg))
+-        val = tmco.fields.set_field(field, arg)
++        write_arg = arg
++        # Older Klipper versions cache the enabled TOFF value separately and
++        # restore that cache whenever a virtually-enabled stepper is enabled.
++        # Keep the cache in sync without energizing a currently disabled motor.
++        if field == "toff" and getattr(self.tmc_cmdhelper, "toff", None) is not None:
++            self.tmc_cmdhelper.toff = arg
++            stepper_enable = getattr(self.tmc_cmdhelper, "stepper_enable", None)
++            stepper_name = getattr(self.tmc_cmdhelper, "stepper_name", None)
++            if stepper_enable is not None and stepper_name is not None:
++                enable_line = stepper_enable.lookup_enable(stepper_name)
++                if not enable_line.is_motor_enabled():
++                    write_arg = 0
++        val = tmco.fields.set_field(field, write_arg)
+         tmco.mcu_tmc.set_register(register, val, None)
+ 
+     def _set_driver_velocity_field_new(self, field, velocity):

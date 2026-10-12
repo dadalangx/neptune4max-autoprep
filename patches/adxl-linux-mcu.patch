@@ -1,0 +1,136 @@
+--- a/src/sensor_adxl345.c
++++ b/src/sensor_adxl345.c
+@@ -11,18 +11,26 @@
+ #include "command.h" // DECL_COMMAND
+ #include "sched.h" // DECL_TASK
+ #include "spicmds.h" // spidev_transfer
++#include "trsync.h" // trsync_do_trigger
+ 
+ struct adxl345 {
+-    struct timer timer;
++    struct timer timer, tap_timer;
+     uint32_t rest_ticks;
++    uint32_t tap_rest_ticks, tap_trigger_clock, tap_query_ticks;
+     struct spidev_s *spi;
++    struct trsync *tap_ts;
++    uint32_t tap_poll_count;
+     uint16_t sequence, limit_count;
+-    uint8_t flags, data_count;
++    uint8_t flags, data_count, tap_flags, tap_source, tap_trigger_reason;
+     uint8_t data[50];
+ };
+ 
+ enum {
+     AX_HAVE_START = 1<<0, AX_RUNNING = 1<<1, AX_PENDING = 1<<2,
++};
++
++enum {
++    AX_TAP_ARM = 1<<0, AX_TAP_RUNNING = 1<<1,
+ };
+ 
+ static struct task_wake adxl345_wake;
+@@ -80,12 +88,87 @@
+ 
+ // Chip registers
+ #define AR_POWER_CTL   0x2D
++#define AR_INT_ENABLE  0x2E
++#define AR_INT_SOURCE  0x30
+ #define AR_DATAX0      0x32
+ #define AR_FIFO_STATUS 0x39
+ #define AM_READ  0x80
+ #define AM_MULTI 0x40
+ 
++#define SINGLE_TAP 0x40
++
+ #define SET_FIFO_CTL 0x90
++
++// Timer callback for ADXL345 Single Tap polling
++static uint_fast8_t
++adxl345_tap_event(struct timer *timer)
++{
++    struct adxl345 *ax = container_of(timer, struct adxl345, tap_timer);
++    if (ax->tap_flags & AX_TAP_ARM) {
++        // Clear stale events and enable only the Single Tap interrupt.
++        uint8_t clear_msg[2] = { AR_INT_SOURCE | AM_READ, 0x00 };
++        spidev_transfer(ax->spi, 1, sizeof(clear_msg), clear_msg);
++        uint8_t enable_msg[2] = { AR_INT_ENABLE, SINGLE_TAP };
++        spidev_transfer(ax->spi, 0, sizeof(enable_msg), enable_msg);
++        ax->tap_flags = AX_TAP_RUNNING;
++        ax->tap_timer.waketime += ax->tap_rest_ticks;
++        return SF_RESCHEDULE;
++    }
++
++    uint8_t msg[2] = { AR_INT_SOURCE | AM_READ, 0x00 };
++    uint32_t time1 = timer_read_time();
++    spidev_transfer(ax->spi, 1, sizeof(msg), msg);
++    uint32_t time2 = timer_read_time();
++    ax->tap_query_ticks = time2 - time1;
++    ax->tap_poll_count++;
++    if (msg[1] & SINGLE_TAP) {
++        ax->tap_source = msg[1];
++        ax->tap_trigger_clock = time2;
++        ax->tap_flags = 0;
++        trsync_do_trigger(ax->tap_ts, ax->tap_trigger_reason);
++        return SF_DONE;
++    }
++    ax->tap_timer.waketime += ax->tap_rest_ticks;
++    return SF_RESCHEDULE;
++}
++
++// Start or stop scheduled Single Tap polling
++void
++command_adxl345_tap_home(uint32_t *args)
++{
++    struct adxl345 *ax = oid_lookup(args[0], command_config_adxl345);
++    sched_del_timer(&ax->tap_timer);
++    ax->tap_flags = 0;
++    ax->tap_ts = NULL;
++    if (!args[2])
++        return;
++    ax->tap_timer.func = adxl345_tap_event;
++    ax->tap_timer.waketime = args[1];
++    ax->tap_rest_ticks = args[2];
++    ax->tap_ts = trsync_oid_lookup(args[3]);
++    ax->tap_trigger_reason = args[4];
++    ax->tap_trigger_clock = ax->tap_query_ticks = ax->tap_poll_count = 0;
++    ax->tap_source = 0;
++    ax->tap_flags = AX_TAP_ARM;
++    sched_add_timer(&ax->tap_timer);
++}
++DECL_COMMAND(command_adxl345_tap_home,
++             "adxl345_tap_home oid=%c clock=%u rest_ticks=%u"
++             " trsync_oid=%c trigger_reason=%c");
++
++// Report the latest Single Tap polling state without clearing chip registers
++void
++command_adxl345_tap_query_state(uint32_t *args)
++{
++    uint8_t oid = args[0];
++    struct adxl345 *ax = oid_lookup(oid, command_config_adxl345);
++    sendf("adxl345_tap_state oid=%c homing=%c trigger_clock=%u"
++          " int_source=%c poll_count=%u query_ticks=%u"
++          , oid, !!ax->tap_flags, ax->tap_trigger_clock, ax->tap_source
++          , ax->tap_poll_count, ax->tap_query_ticks);
++}
++DECL_COMMAND(command_adxl345_tap_query_state,
++             "adxl345_tap_query_state oid=%c");
+ 
+ // Query accelerometer data
+ static void
+@@ -221,3 +304,16 @@
+     }
+ }
+ DECL_TASK(adxl345_task);
++
++void
++adxl345_tap_shutdown(void)
++{
++    uint8_t oid;
++    struct adxl345 *ax;
++    foreach_oid(oid, ax, command_config_adxl345) {
++        sched_del_timer(&ax->tap_timer);
++        ax->tap_flags = 0;
++        ax->tap_ts = NULL;
++    }
++}
++DECL_SHUTDOWN(adxl345_tap_shutdown);

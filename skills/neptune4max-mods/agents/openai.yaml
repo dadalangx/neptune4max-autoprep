@@ -1,0 +1,4 @@
+interface:
+  display_name: "Neptune 4 Max 改装接手"
+  short_description: "按目标机器适配双 Z、ADXL、擦嘴、床网与 Bambu Studio"
+  default_prompt: "使用 $neptune4max-mods 阅读本项目，先盘点我的海王星 4 Max，再按所选功能准备适配差异、备份和验证。"

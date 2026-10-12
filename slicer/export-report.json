@@ -1,0 +1,16 @@
+{
+  "source_date": "2026-10-12",
+  "source_sha256": "269b3a572ae42d82e474079765e350206bbde70e2da19f7afaefdc4f06f6dec8",
+  "published_sha256": "0b282be9288bcf1f2c47f9f2b5692badf4afc4313b7f9cd4d4e3c2ef71bd36cd",
+  "changes": [
+    {
+      "member": "3D/3dmodel.model",
+      "field": "DesignerUserId",
+      "action": "cleared"
+    }
+  ],
+  "slicer": "BambuStudio-02.08.02.60",
+  "model": "3DBenchy, source: https://www.3dbenchy.com/, license: CC0 1.0 per current author license page",
+  "start_end_match_supplied_text": true,
+  "original_input_unchanged": true
+}
