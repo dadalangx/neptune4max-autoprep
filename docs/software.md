@@ -27,6 +27,8 @@
 
 ## 模块与目标位置
 
+按功能选择现成实现、父配置关联节和依赖时，先查看[代码复用入口](implementation-reuse.md)；该索引不要求加载全部模块。
+
 | 仓库文件 | 目标位置或用途 |
 |---|---|
 | `source/klipper/klippy/extras/adxl345_tap.py` | 对应 Klipper `klippy/extras/`，提供 Linux MCU Tap endstop 和测量核心 |

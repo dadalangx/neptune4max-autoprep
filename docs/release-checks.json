@@ -8,7 +8,7 @@
   "fixed_baseline_patches_reproduce_sources": true,
   "three_mf_project_settings_and_geometry_preserved": true,
   "start_end_original_bytes_preserved": true,
-  "offline_regressions": 68,
+  "offline_regressions": 75,
   "skill_validator": "passed",
   "second_stock_printer_verified": false,
   "linux_mcu_rebuilt_in_this_release": false,
@@ -25,5 +25,18 @@
   "adaptive_mesh_reference_drift_actual_4x4_verified": true,
   "adaptive_mesh_reference_drift_python2_offline_tests": 10,
   "adaptive_mesh_reference_drift_agent_workflow_documented": true,
-  "native_bed_mesh_calibrate_not_overridden": true
+  "native_bed_mesh_calibrate_not_overridden": true,
+  "implementation_reuse_audit": {
+    "date": "2026-10-13",
+    "feature_entries": 14,
+    "configuration_section_references": 36,
+    "relative_links_and_anchors_checked": 269,
+    "public_text_files_privacy_checked": 93,
+    "published_artifact_hashes_match": true,
+    "exit_macros_match_two_captured_configurations": true,
+    "new_reader_offline_tests": 7,
+    "bilingual_reuse_guide_commands_and_identifiers_match": true,
+    "printer_connected_or_modified_for_this_audit": false,
+    "standalone_adaptive_resolver_claimed_verified": false
+  }
 }

@@ -44,6 +44,8 @@ flowchart TD
 
 ## 第二层：功能选择与依赖
 
+先查[现成实现入口](../../../docs/implementation-reuse.md)或在控制电脑运行`python tools/reference_bundle.py <功能ID>`，取得所选源码、精确配置节和依赖，不遍历全仓库重新推导实现。`--with-dependencies`扩展现有实现依赖；`--config`只提取本地参考节，仍需按P2比较并保留目标参数。完整方案的自动范围resolver沿用ADXL注册；仅显式范围的温漂网格可用独立`mesh-drift`入口。
+
 | 用户选择 | 必须一起处理的条件 | 仓库入口 | 实体验收入口 |
 |---|---|---|---|
 | 独立双 Z | 新驱动/独立接线、原 Z 配置、PA11、真实侧别与方向、丝杆几何 | `independent_dual_z.cfg` 的 Z 驱动/z_tilt/DUAL_Z_LEVEL 部分；无 ADXL 时不加载 PREPARE_WIPE 包装宏 | [P6 双 Z](commissioning-and-calibration.md#p61独立双-z) |

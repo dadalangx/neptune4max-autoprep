@@ -27,6 +27,8 @@ Retaining factory software does not justify trusting these coordinates. After po
 
 ## Modules and target locations
 
+Use the [implementation reuse guide](implementation-reuse.en.md) to select existing code, related parent sections, and dependencies by feature. The index does not require loading every module.
+
 | Repository file | Target location or purpose |
 |---|---|
 | `source/klipper/klippy/extras/adxl345_tap.py` | Target Klipper `klippy/extras/`; Linux MCU Tap endstop and measurement core |

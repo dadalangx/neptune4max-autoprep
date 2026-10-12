@@ -195,6 +195,19 @@
       "role": "unmodified reference source; offline tests only, do not install",
       "reference_sha256": "c8ec361ae34d7f674b11e523292218c8bc2a05b7a87ca95ba28f26191bb1d906",
       "published_sha256": "c8ec361ae34d7f674b11e523292218c8bc2a05b7a87ca95ba28f26191bb1d906"
+    },
+    {
+      "path": "config/reference/print-exit-macros.cfg",
+      "source_path": "/home/mks/klipper_config/printer.cfg",
+      "date": "2026-10-13",
+      "role": "Exact PRINT_END/CANCEL_PRINT excerpts from captured working-reference config; not independently re-executed for export",
+      "sections": [
+        "gcode_macro PRINT_END",
+        "gcode_macro CANCEL_PRINT"
+      ],
+      "excerpt_sha256": "1287e8f1f32a5ea9ea94da8ef555337299295b033601375b45fdb248896ec49b",
+      "published_sha256": "295a67ed21a53090ffbab2a5ea21e0f572463299d7eedfc52c49c0f89d4c14ac",
+      "normalization": "LF line endings and trailing whitespace only; macro implementation unchanged"
     }
   ],
   "versions": {

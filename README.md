@@ -45,6 +45,7 @@
 ## 进一步阅读
 
 - [智能体入口](skills/neptune4max-mods/SKILL.md)：复刻、维护与排错的工作指南。
+- [现成代码与复用入口](docs/implementation-reuse.md)：按所选功能找到已有源码和配置，避免从头实现。
 - [硬件与照片](docs/hardware.md)：驱动、接线、风扇和擦嘴条装配参考。
 - [功能原理](docs/features.md)、[软件适配](docs/software.md)、[验收与回退](docs/validation.md)、[精选经验](docs/lessons-learned.md)：供智能体或有需要的使用者查阅。
 

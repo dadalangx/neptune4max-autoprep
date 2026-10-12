@@ -13,6 +13,8 @@ description: Adapt or troubleshoot the Neptune 4 Max ZNP K1 V2.0 modification pr
 
 只排错或维护时从相关阶段开始；只整理资料时不进入机器部署。每台目标机保存私有接手记录，区分待测、模拟、计划、通信、接触和打印结果，跨会话继续前核对实时状态；不因记录写了“已完成”就自动重复实体动作。
 
+复刻代码从[已有实现索引](../../docs/implementation-reuse.md)开始。`implementation-map.json`按功能列出精确配置节、源码、依赖与证据；在控制电脑运行`python tools/reference_bundle.py <功能ID>`只读取所选索引，`--config`可提取现成配置节。P2先复用这些实现，再合并目标差异；代码已经存在时不根据文字重写状态机、网格调度或风扇路由。该工具不安装，也不证明提取结果可直接加载。
+
 ## 开始时确认什么
 
 读取用户提供的仓库 README、目标地址与任务范围。地址由用户自行确定，仓库不包含参考机IP；常见原厂SSH为mks/makerbase，用户修改后的凭据按其提供处理。如果skill被单独安装，先取得项目源码目录，再使用其中的source/config/patches，而不是以为skill含有全部程序。

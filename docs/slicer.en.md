@@ -24,6 +24,8 @@ The final ADXL measurement requires the same bed temperature, SOAK=0, AFTER_WIPE
 
 ## Known adaptation items in the original files
 
+The reference printer's actual `PRINT_END` and `CANCEL_PRINT` code is available as [exit macro excerpts](../config/reference/print-exit-macros.cfg). It includes motion-limit restoration and factory PLR commands for merging into existing target handlers. Do not add duplicate macros or assume the supplied end code invokes them. Their final `M84` releases all motors, unlike the slicer end code described below that holds Z.
+
 Both start and end files contain `SET_SKEW CLEAR=1`. The reference printer's current command table has no SET_SKEW. For the same environment, generate a target template without this line; if the target actually uses skew_correction, handle it accordingly. Do not change an existing skew configuration just to remove a command error.
 
 The end-code line `;PRINT_END` is a comment and **does not execute PRINT_END**. Its `M106 S0` turns off only the main fan and does not ensure PC9 auxiliary cooling stops. In a target end template with fan routing already available, use `M107` for both fans or add `M106 P2 S0`. Do not describe the original file as already doing this. The reference printer and original user files were not modified during that documentation work.

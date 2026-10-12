@@ -1,0 +1,477 @@
+{
+  "schema_version": 1,
+  "note": "Implementation lookup and exact offline excerpts, not an installer or blanket compatibility promise. depends_on describes the supplied implementation; native target requirements and adaptations remain mandatory. The reference reader is a new offline tool, not printer runtime code.",
+  "features": {
+    "probe-base": {
+      "summary": "Native PA11 homing and mesh basis used by the existing implementation",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/printer-sections.cfg",
+          "sections": [
+            "stepper_z",
+            "tmc2209 stepper_z",
+            "probe",
+            "safe_z_home"
+          ]
+        },
+        {
+          "path": "config/reference/host-sensors-motors.cfg",
+          "sections": [
+            "printer",
+            "bed_mesh"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "Target-native probe, bed_mesh, homing and stepper_enable modules; preserve them."
+      ],
+      "adapt_on_target": [
+        "Probe offsets/raw Z basis, safe home, travel, velocity limits and mesh limits are per-machine. Do not overwrite the target printer section wholesale."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "dual-z": {
+      "summary": "Independent Z drivers, six-point Z tilt, DUAL_Z_LEVEL, paired Z enable/release",
+      "depends_on": [
+        "probe-base"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/independent_dual_z.cfg",
+          "sections": [
+            "stepper_z1",
+            "tmc2209 stepper_z1",
+            "z_tilt",
+            "gcode_macro DUAL_Z_LEVEL"
+          ]
+        },
+        {
+          "path": "config/reference/host-sensors-motors.cfg",
+          "sections": [
+            "gcode_macro M17",
+            "gcode_macro M84"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "MKS TMC2209 V2.0 R110, UART-only jumper, independent motor wiring, respond."
+      ],
+      "adapt_on_target": [
+        "Observe motor side and direction; order z_positions by stepper_z then stepper_z1; measure screw geometry. Keep the prepare wrapper out of a dual-Z-only setup."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "part-cooling": {
+      "summary": "Main fan 0-100% to 0-70% PWM; independent Bambu M106 P2 auxiliary fan",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/printer-sections.cfg",
+          "sections": [
+            "fan"
+          ]
+        },
+        {
+          "path": "config/reference/bambu_aux_fan.cfg",
+          "sections": [
+            "fan_generic auxiliary_fan",
+            "gcode_macro M106",
+            "gcode_macro M107"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "Factory auxiliary fan moved to FAN3/PC9; native fan and fan_generic; existing M106/M107 names checked."
+      ],
+      "adapt_on_target": [
+        "Verify pin allocation, fan identity/polarity and slicer P routing; preserve PC7 heatbreak fan."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "driver-cooling": {
+      "summary": "FAN4/PA8 controller fan and legacy empty-heater-list fix",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/driver_cooling.cfg",
+          "sections": [
+            "controller_fan driver_cooling"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "source/klipper/klippy/extras/controller_fan.py",
+          "target": "<klipper>/klippy/extras/controller_fan.py",
+          "reuse": "Merge only the empty-name filtering if needed; preserve target vendor code."
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/controller-fan-empty-heater.patch"
+        }
+      ],
+      "assets": [],
+      "target_requirements": [
+        "Native stepper_enable; all names in the monitored stepper list must exist."
+      ],
+      "adapt_on_target": [
+        "Reference includes stepper_z1: remove that name if independent Z is not selected. Check whether the target already accepts an empty heater list."
+      ],
+      "evidence": "Owner observed fan startup; enable/hold tracking and delayed stop tested on the reference printer. See reference-manifest.json driver_cooling_validation."
+    },
+    "adxl-linux": {
+      "summary": "Existing Linux MCU Tap detection and matching host driver, without mainboard flashing",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/host-sensors-motors.cfg",
+          "sections": [
+            "mcu rpi",
+            "adxl345 x"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "source/klipper/klippy/extras/adxl345.py",
+          "target": "<klipper>/klippy/extras/adxl345.py",
+          "reuse": "Compare/merge the vendor driver; do not replace an unknown branch blindly."
+        },
+        {
+          "path": "source/klipper/klippy/extras/adxl345_tap.py",
+          "target": "<klipper>/klippy/extras/adxl345_tap.py",
+          "reuse": "Reuse the host Tap core with a matching Linux MCU protocol."
+        },
+        {
+          "path": "source/klipper/src/sensor_adxl345.c",
+          "target": "<isolated-klipper-build>/src/sensor_adxl345.c",
+          "reuse": "Rebuild the Linux process MCU from the custom source, not the restored stock C on printer disk."
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/adxl-linux-mcu.patch"
+        },
+        {
+          "path": "patches/adxl345-reference-vs-upstream.patch"
+        }
+      ],
+      "assets": [
+        {
+          "path": "source/klipper/linuxprocess.config"
+        }
+      ],
+      "target_requirements": [
+        "Target-native mcu/chelper/SPI support and complete compatible Klipper build tree; factory toolhead ADXL345."
+      ],
+      "adapt_on_target": [
+        "SPI/axes mapping and actual Linux MCU service/device; confirm Tap command dictionary and host signatures. Never flash the STM32 as part of this feature."
+      ],
+      "evidence": "Host source captured from reference printer. Custom C retained by original project; prior deployment binary matches live binary hash. No distributable binary or rebuild certification."
+    },
+    "adxl-offset": {
+      "summary": "Heat soak, same-point PA11 coarse probe, guarded three-tap offset, one-use wipe session and fuzz",
+      "depends_on": [
+        "probe-base",
+        "adxl-linux"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/adxl345_z_offset.cfg",
+          "sections": [
+            "adxl345_z_offset"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "source/klipper/klippy/extras/adxl345_z_offset.py",
+          "target": "<klipper>/klippy/extras/adxl345_z_offset.py",
+          "reuse": "Reuse the existing preparation/measurement state machine and command registration."
+        },
+        {
+          "path": "source/klipper/klippy/extras/adaptive_mesh_bounds.py",
+          "target": "<klipper>/klippy/extras/adaptive_mesh_bounds.py",
+          "reuse": "Required import even when only offset commands are selected."
+        }
+      ],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "A calibrated nozzle-contact window and PA11 basis; a valid bed mesh covering the possible contact area."
+      ],
+      "adapt_on_target": [
+        "Contact limits/baseline, toolhead center, bed/nozzle conditions, trim and session integration. Do not merely copy z_offset=0 or -2 baseline."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "mesh-drift": {
+      "summary": "Standalone rectangular mesh command with center-reference time interpolation",
+      "depends_on": [
+        "probe-base"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/adaptive_bed_mesh.cfg",
+          "sections": [
+            "adaptive_mesh_drift"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "source/klipper/klippy/extras/adaptive_mesh_drift.py",
+          "target": "<klipper>/klippy/extras/adaptive_mesh_drift.py",
+          "reuse": "Reuse point scheduling, median reference sampling, interpolation and native matrix handoff."
+        }
+      ],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "Compatible target-native bed_mesh/probe/manual_probe/homing interfaces; automatic rectangular mesh without faulty_regions."
+      ],
+      "adapt_on_target": [
+        "Center probe coordinates, reachable reference nozzle position, conditioning and drift limits. Direct ADAPTIVE_MESH_DRIFT_CALIBRATE with explicit bounds does not need the ADXL resolver."
+      ],
+      "evidence": "Actual 4x4 XY scan and Python2 tests verified. Full subsequent print with drift correction and a second stock machine are not yet certified."
+    },
+    "adaptive-mesh": {
+      "summary": "Bambu bounds/PA-line resolver and existing adaptive mesh builder",
+      "depends_on": [
+        "adxl-offset",
+        "mesh-drift"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/adaptive_bed_mesh.cfg",
+          "sections": [
+            "gcode_macro ADAPTIVE_BED_MESH",
+            "gcode_macro _ADAPTIVE_BED_MESH_BUILD"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [
+        {
+          "path": "slicer/start_gcode.txt"
+        }
+      ],
+      "target_requirements": [
+        "ADAPTIVE_MESH_RESOLVE is registered by adxl345_z_offset.py in the working integrated setup."
+      ],
+      "adapt_on_target": [
+        "Probe/nozzle coordinate distinction, bbox/margin/counts and ADXL coverage. No verified standalone adaptive resolver module is supplied; do not invent one for the complete setup."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "print-preparation": {
+      "summary": "Use the existing Bambu preparation sequence and dual-Z prepare wrapper",
+      "depends_on": [
+        "dual-z",
+        "adaptive-mesh",
+        "part-cooling"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/independent_dual_z.cfg",
+          "sections": [
+            "gcode_macro ADXL_Z_OFFSET_PREPARE_WIPE"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [
+        {
+          "path": "slicer/start_gcode.txt"
+        },
+        {
+          "path": "slicer/end_gcode.txt"
+        },
+        {
+          "path": "slicer/naptune4max.3mf"
+        }
+      ],
+      "target_requirements": [
+        "A1 wiper fitted and measured; load the prepare wrapper only after its base command exists."
+      ],
+      "adapt_on_target": [
+        "Use the owner files as the starting implementation. Change only target geometry/limits/calibration and known slicer compatibility items; check SET_SKEW and auxiliary fan shutdown."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "mesh-profile-compat": {
+      "summary": "Existing touchscreen LOAD=11 redirect and delayed default profile load",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/adxl345_z_offset.cfg",
+          "sections": [
+            "gcode_macro BED_MESH_PROFILE",
+            "delayed_gcode FORCE_DEFAULT_BED_MESH"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [],
+      "target_requirements": [
+        "Native BED_MESH_PROFILE and an actually existing, calibrated default profile."
+      ],
+      "adapt_on_target": [
+        "Optional vendor compatibility. Postpone until a target default mesh exists; never transplant the owner mesh values."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "autotune": {
+      "summary": "Pinned Python2-compatible autotune_tmc plugin and reference motor inputs",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/host-sensors-motors.cfg",
+          "sections": [
+            "motor_constants neptune4max-x-measured",
+            "motor_constants neptune4max-y-measured"
+          ]
+        },
+        {
+          "path": "config/reference/printer-sections.cfg",
+          "sections": [
+            "autotune_tmc stepper_x",
+            "autotune_tmc stepper_y",
+            "autotune_tmc extruder"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "source/klipper_tmc_autotune/autotune_tmc.py",
+          "target": "<klipper>/klippy/extras/autotune_tmc.py",
+          "reuse": "Use the pinned adapted version and companion files."
+        },
+        {
+          "path": "source/klipper_tmc_autotune/motor_constants.py",
+          "target": "<klipper>/klippy/extras/motor_constants.py",
+          "reuse": "Use the pinned adapted version and companion files."
+        },
+        {
+          "path": "source/klipper_tmc_autotune/motor_database.cfg",
+          "target": "<klipper>/klippy/extras/motor_database.cfg",
+          "reuse": "Use the pinned adapted version and companion files."
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/autotune-python2-compat.patch"
+        }
+      ],
+      "assets": [],
+      "target_requirements": [
+        "Native TMC objects, actual target motor inputs and matching old APIs."
+      ],
+      "adapt_on_target": [
+        "X/Y motor inputs and extruder approximation need confirmation. Do not upgrade Python or use a rolling upstream installer; no Z autotune in reference."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "metadata": {
+      "summary": "Bambu layer/height metadata and vendor preview compatibility",
+      "depends_on": [],
+      "configs": [],
+      "sources": [
+        {
+          "path": "source/moonraker/metadata.py",
+          "target": "<moonraker>/moonraker/components/file_manager/metadata.py",
+          "reuse": "Reuse BambuStudio parser and necessary interface differences; preserve vendor code."
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/moonraker-metadata-reference-vs-upstream.patch"
+        }
+      ],
+      "assets": [],
+      "target_requirements": [
+        "Actual Moonraker interpreter/metadata entry points and Pillow; check service-user preview directory access."
+      ],
+      "adapt_on_target": [
+        "Refresh/upload a test file. Current-layer display may be inferred by the old UI; this is not a precise layer-event implementation."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "cold-pull": {
+      "summary": "Existing 150mm/250C to 90C maintenance macro, extruder release and two short beeps",
+      "depends_on": [
+        "part-cooling"
+      ],
+      "configs": [
+        {
+          "path": "config/reference/printer-sections.cfg",
+          "sections": [
+            "output_pin beeper"
+          ]
+        },
+        {
+          "path": "config/reference/cold_pull.cfg",
+          "sections": [
+            "gcode_macro COLD_PULL",
+            "gcode_macro COLD_PULL_BEEP"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [
+        {
+          "path": "slicer/COLD_PULL_150mm_90C.gcode"
+        }
+      ],
+      "target_requirements": [
+        "respond, compatible extruder/axis limits, owner-approved material recipe and permitted 90C retraction."
+      ],
+      "adapt_on_target": [
+        "Do not silently lower the target min_extrude_temp. The expanded file handles virtual SD execution; the macro idle guard rejects execution during a print. Verify beep volume on target."
+      ],
+      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+    },
+    "print-exit": {
+      "summary": "Existing PRINT_END/CANCEL_PRINT motion-limit restoration and factory exit integration",
+      "depends_on": [],
+      "configs": [
+        {
+          "path": "config/reference/print-exit-macros.cfg",
+          "sections": [
+            "gcode_macro PRINT_END",
+            "gcode_macro CANCEL_PRINT"
+          ]
+        }
+      ],
+      "sources": [],
+      "patches": [],
+      "assets": [
+        {
+          "path": "slicer/end_gcode.txt"
+        }
+      ],
+      "target_requirements": [
+        "Target existing cancel/PLR/save_variables/gcode_shell_command/clear_last_file dependencies and correct M107/M84 handlers."
+      ],
+      "adapt_on_target": [
+        "Merge into existing handlers, never define a duplicate. These macros release all motors, unlike slicer M84 X Y E; preserve the chosen Z holding behavior."
+      ],
+      "evidence": "Exact excerpts agree between 2026-10-11 and 2026-10-13 captured printer configurations. Export checked offline; no new execution or full failure-path certification."
+    }
+  }
+}

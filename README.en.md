@@ -45,6 +45,7 @@ The project contains reference settings and a 3DBenchy model. Separate [start co
 ## Further reading
 
 - [Agent entry point](skills/neptune4max-mods/SKILL.md): replication, maintenance, and troubleshooting guidance.
+- [Existing code and reuse entry points](docs/implementation-reuse.en.md): find source and configuration by selected feature instead of rebuilding them.
 - [Hardware and photos](docs/hardware.en.md): driver, wiring, fan, and wiper assembly references.
 - [Feature principles](docs/features.en.md), [software adaptation](docs/software.en.md), [validation and rollback](docs/validation.en.md), and [selected lessons](docs/lessons-learned.en.md): details for agents and interested users.
 
