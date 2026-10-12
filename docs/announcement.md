@@ -1,3 +1,5 @@
+**简体中文** | [English](announcement.en.md)
+
 # 发布文案
 
 ## GitHub 项目简介

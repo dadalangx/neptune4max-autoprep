@@ -1,3 +1,5 @@
+**简体中文** | [English](validation.en.md)
+
 # 验收、问题定位与回退
 
 ## 已有证据

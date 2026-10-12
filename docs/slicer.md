@@ -1,3 +1,5 @@
+**简体中文** | [English](slicer.en.md)
+
 # Bambu Studio 项目与首尾代码
 
 ## 导入

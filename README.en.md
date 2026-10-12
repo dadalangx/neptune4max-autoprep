@@ -19,7 +19,7 @@ The owner confirms that the reference printer works normally. The complete setup
 | Bambu Studio support | Supplies a reference project and start/end code, with improved web interface metadata recognition |
 | Factory software compatibility | Keeps the original software environment and merges changes for the actual version |
 
-You can choose only some features. Dual Z, wiping, and fan modifications require the corresponding hardware work. The complete setup can use an **MKS TMC2209 V2.0** and a **silicone nozzle wiper for the Bambu Lab A1**. Start with the [parts list and assembly steps (Chinese)](docs/bom-and-assembly.md), then have the agent confirm the requirements for your selected features using the [hardware guide and photos](docs/hardware.md).
+You can choose only some features. Dual Z, wiping, and fan modifications require the corresponding hardware work. The complete setup can use an **MKS TMC2209 V2.0** and a **silicone nozzle wiper for the Bambu Lab A1**. Start with the [parts list and assembly steps](docs/bom-and-assembly.en.md), then have the agent confirm the requirements for your selected features using the [hardware guide and photos](docs/hardware.en.md).
 
 ## How to use it
 
@@ -34,18 +34,18 @@ Find the printer address on its screen or in your router. Common factory SSH cre
 
 The overall process is inspection → adaptation for selected features → assembly and calibration → first-layer acceptance. The agent reads detailed procedures from the skill as needed.
 
-**After powering on or restarting Klipper, perform real homing before moving the toolhead or calibrating the bed mesh.** Default interface coordinates and the homed indicator may disagree with the physical position. Until real Home has completed, do not issue arbitrary moves or click the web interface's bed mesh calibration button. The agent checks homing conditions using the [validation guide](docs/validation.md#上电与重启后的归位规则).
+**After powering on or restarting Klipper, perform real homing before moving the toolhead or calibrating the bed mesh.** Default interface coordinates and the homed indicator may disagree with the physical position. Until real Home has completed, do not issue arbitrary moves or click the web interface's bed mesh calibration button. The agent checks homing conditions using the [validation guide](docs/validation.en.md#homing-after-power-on-or-restart).
 
 ## Using the Bambu Studio preset
 
 After adapting the printer and completing basic validation, open [naptune4max.3mf](slicer/naptune4max.3mf) in Bambu Studio as a **project**. Load its printer, process, and filament settings, then save your own user presets.
 
-The project contains reference settings and a 3DBenchy model. Separate [start code](slicer/start_gcode.txt) and [end code](slicer/end_gcode.txt) are also provided. Have the agent adapt your preset for your hardware, wiper position, and first-layer calibration, then slice again. **Do not run the supplied start code on a stock printer before the required assembly and calibration are complete.** See the [slicer guide](docs/slicer.md).
+The project contains reference settings and a 3DBenchy model. Separate [start code](slicer/start_gcode.txt) and [end code](slicer/end_gcode.txt) are also provided. Have the agent adapt your preset for your hardware, wiper position, and first-layer calibration, then slice again. **Do not run the supplied start code on a stock printer before the required assembly and calibration are complete.** See the [slicer guide](docs/slicer.en.md).
 
 ## Further reading
 
 - [Agent entry point](skills/neptune4max-mods/SKILL.md): replication, maintenance, and troubleshooting guidance.
-- [Hardware and photos](docs/hardware.md): driver, wiring, fan, and wiper assembly references.
-- [Feature principles](docs/features.md), [software adaptation](docs/software.md), [validation and rollback](docs/validation.md), and [selected lessons](docs/lessons-learned.md): details for agents and interested users.
+- [Hardware and photos](docs/hardware.en.md): driver, wiring, fan, and wiper assembly references.
+- [Feature principles](docs/features.en.md), [software adaptation](docs/software.en.md), [validation and rollback](docs/validation.en.md), and [selected lessons](docs/lessons-learned.en.md): details for agents and interested users.
 
-The detailed guides and skill are currently in Chinese. Source code and new project documentation are released under [GNU GPLv3](LICENSE); third-party assets retain their own licenses, as described in the [source notes](THIRD_PARTY.md). Contributions of sanitized reproduction results and adaptation patches are welcome. Results depend on mechanical condition, materials, and calibration; software cannot replace leadscrew or mechanical bed maintenance.
+Reader-facing guides are available in English and Simplified Chinese. The agent skill and detailed replication workflows remain in Chinese; ask the agent to explain and carry out the work in your preferred language. Source code and new project documentation are released under [GNU GPLv3](LICENSE); third-party assets retain their own licenses, as described in the [source notes](THIRD_PARTY.en.md). Contributions of sanitized reproduction results and adaptation patches are welcome; see the [contribution guide](CONTRIBUTING.en.md). Results depend on mechanical condition, materials, and calibration; software cannot replace leadscrew or mechanical bed maintenance.

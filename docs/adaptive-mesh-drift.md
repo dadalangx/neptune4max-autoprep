@@ -1,3 +1,5 @@
+**简体中文** | [English](adaptive-mesh-drift.en.md)
+
 # 自适应床网的中心参考温漂修正
 
 本模块用固定床面参考点的重复测量，估计扫描期间的公共漂移，再按时间插值修正 PA11 网格高度。参考机已完成固定 XY 实验及实际 XY 网格集成验证；其他机器需按[智能体实施步骤](../skills/neptune4max-mods/references/adaptive-mesh-drift.md)适配。这里的“温漂补偿”不代表已经分离并消除了所有传感器和机械热误差。
