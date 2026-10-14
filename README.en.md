@@ -2,6 +2,8 @@
 
 # Neptune 4 Max AutoPrep
 
+Built on the Neptune 4 Max's factory firmware, this project aims to improve print quality and automate print preparation with minimal hardware changes.
+
 Automate more of the Neptune 4 Max's print preparation and reduce repetitive leveling, wiping, and first-layer height adjustment. This project provides source code, reference configurations, and an agent guide for a setup in regular use. Give it to Codex or another AI agent to adapt the features you choose to your own printer.
 
 The owner confirms that the reference printer works normally. The complete setup has not yet been reproduced and accepted on a second, unmodified Neptune 4 Max; each feature needs inspection and calibration.
