@@ -37,7 +37,9 @@ After cleaning, `ADXL_Z_OFFSET ... SOAK=0 AFTER_WIPE=1` consumes the previously 
 
 ## Z_TILT, bed mesh, and ADXL
 
-`Z_TILT_ADJUST` moves the two Z motors relative to each other to align the gantry. Each PA11 point currently uses three samples and their median; Klipper fits a plane to the six points and calculates corrections from the leadscrew positions. It does not simply subtract separate left and right three-point averages. `retry_tolerance: 0.03` checks the range of point heights, with up to five retries. Local bed unevenness may prevent convergence.
+`Z_TILT_ADJUST` moves the two Z motors relative to each other to align the gantry. Each PA11 point currently uses three samples and their median; Klipper fits a plane to the six points and calculates corrections from the leadscrew positions. It does not simply subtract separate left and right three-point averages. `retry_tolerance: 0.02` checks the range of point heights, with up to five retries. Local bed unevenness may prevent convergence; this tolerance does not guarantee a physical left/right height error below 0.02 mm.
+
+The reference setting `speed: 350` (mm/s) controls XY travel between tilt-calibration points to shorten calibration, without changing the probe's Z probing speed. On 2026-10-15, the owner confirmed that the `0.02` tolerance and `350` speed had been validated on this printer. This publication uses those owner-provided values without reconnecting to or retesting the printer. Recipients must check the target machine's velocity and acceleration limits and convergence before adopting them. See the [dual Z reference configuration](../config/reference/independent_dual_z.cfg).
 
 `BED_MESH_CALIBRATE` measures bed shape using PA11. Z moves up and down during probing, but this command does not perform independent dual Z tilt correction. During printing, the mesh adds position compensation to common Z motion.
 

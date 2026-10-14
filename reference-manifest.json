@@ -134,7 +134,15 @@
       "driver": "MKS TMC2209 V2.0",
       "sense_resistor": 0.11,
       "motor_side_mapping": "owner-confirmed reference: original Z left, E1 right; recipients must verify their own wiring",
-      "published_sha256": "6198487cdc50530966785b5bbd7f307e8066755dfd6f371a612129d800ee163c"
+      "published_sha256": "d5f5592c5d948adcc35747bd6e4fa50dd95600599022635fa5bb3c2aeb71a142",
+      "owner_reported_update": {
+        "date": "2026-10-15",
+        "z_tilt_retry_tolerance_mm": 0.02,
+        "z_tilt_xy_speed_mm_s": 350,
+        "owner_validated_on_reference_machine": true,
+        "printer_accessed_for_this_publication": false,
+        "note": "Only these two parameters were updated from the owner's validated settings; not a newly captured complete printer snapshot. Original capture date and reference_sha256 are retained."
+      }
     },
     {
       "path": "config/reference/driver_cooling.cfg",

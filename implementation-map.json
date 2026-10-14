@@ -64,9 +64,10 @@
         "MKS TMC2209 V2.0 R110, UART-only jumper, independent motor wiring, respond."
       ],
       "adapt_on_target": [
-        "Observe motor side and direction; order z_positions by stepper_z then stepper_z1; measure screw geometry. Keep the prepare wrapper out of a dual-Z-only setup."
+        "Observe motor side and direction; order z_positions by stepper_z then stepper_z1; measure screw geometry. Keep the prepare wrapper out of a dual-Z-only setup.",
+        "The owner validated z_tilt retry_tolerance=0.02 mm and XY travel speed=350 mm/s on 2026-10-15. Check target velocity/acceleration limits and convergence; these values are not universal."
       ],
-      "evidence": "Captured working-reference configuration/source; target commissioning still required."
+      "evidence": "Captured working-reference configuration with the two z_tilt parameters updated from the owner's validated settings on 2026-10-15; no new printer access or test for this publication. Target commissioning still required."
     },
     "part-cooling": {
       "summary": "Main fan 0-100% to 0-70% PWM; independent Bambu M106 P2 auxiliary fan",
