@@ -1,0 +1,3 @@
+# Offline analysis environment used for the review figures (Python 3.12).
+numpy==2.5.4
+matplotlib==3.11.2

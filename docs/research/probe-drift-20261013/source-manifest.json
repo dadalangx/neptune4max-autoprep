@@ -1,0 +1,113 @@
+{
+  "status": "Research evidence package approved for publication",
+  "experiment_date": "2026-10-13",
+  "review_date": "2026-10-15",
+  "files": [
+    {
+      "file": "data/warming.csv",
+      "original_record": "run-20261013-022316/measurements.csv",
+      "sha256": "000e254649f16935644c6e74154bd08e7a5efe73a172ac965764cc8fce6c8dd6",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/interrupted-cooling.csv",
+      "original_record": "cooling-20261013-025016/measurements.csv",
+      "sha256": "a280066501aad0a6cf9207240c8891dfac975d23d48a47f70dbdc5f41d6f3b38",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/wait-300-points.csv",
+      "original_record": "conditioning300-20261013-033708/points.csv",
+      "sha256": "d86e30cf6f3286f1b16c88d7c517bdaaa7bd68c5376e91241c31eaf4587b26fa",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/wait-300-raw-probes.csv",
+      "original_record": "conditioning300-20261013-033708/raw-probes.csv",
+      "sha256": "bbe5b728be3b71ef5d6a6bb1d2d56966d237c7ee8af578b73b12001061637d81",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/wait-480-points.csv",
+      "original_record": "conditioning480-20261013-040612/points.csv",
+      "sha256": "abb392bf0b1c440a226e2f990467e5927631129f16de0ff3f1e25d8d90f3b331",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/wait-480-raw-probes.csv",
+      "original_record": "conditioning480-20261013-040612/raw-probes.csv",
+      "sha256": "171cc1e793a0eda92b3a5a9ddf15fc4688d58484a72d998f720c6a55d76dd998",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/reference-180-points.csv",
+      "original_record": "reference180-every5-20261013-044247/points.csv",
+      "sha256": "1804d479771319d495f493fbb7559b2700463b836c04510a03e4967c473281a1",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/reference-180-raw-probes.csv",
+      "original_record": "reference180-every5-20261013-044247/raw-probes.csv",
+      "sha256": "1c7189088008c71e760c7bcf803015beda3f09d6fb9693c075bb24a941849117",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/reference-180-interpolated.csv",
+      "original_record": "reference180-every5-20261013-044247/interpolated-points.csv",
+      "sha256": "cac30f06c3b95a7e7dfe6f554218277465fe1fb3de810468b1a78643bb885311",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/reference-180-block-constant.csv",
+      "original_record": "reference180-every5-20261013-044247/corrected-points.csv",
+      "sha256": "8376493f84c7bab9697205813f5702b1a5ad7a0655245e1aaa5783683caf6c26",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/real-xy-center-references.csv",
+      "original_record": "neptune4max-reference-drift-20261013/validation/center-references.csv",
+      "sha256": "72ba01924cd65c8148222a30ad9db36bb66472f6d7e14571045774ed881253aa",
+      "copy_byte_identical": true
+    },
+    {
+      "file": "data/real-xy-mesh-points.csv",
+      "original_record": "neptune4max-reference-drift-20261013/validation/mesh-points.csv",
+      "sha256": "4f03adf9eb87cacaf6fc7b97d92fc34197bfe74e0e9d6a03e6a19600048aa64e",
+      "copy_byte_identical": true
+    }
+  ],
+  "historical_integrity_checks": [
+    {
+      "record_id": "run-20261013-022316",
+      "completed": true,
+      "before_after_hashes_identical": true
+    },
+    {
+      "record_id": "cooling-20261013-025016",
+      "completed": true,
+      "before_after_hashes_identical": true
+    },
+    {
+      "record_id": "conditioning300-20261013-033708",
+      "completed": true,
+      "before_after_hashes_identical": true
+    },
+    {
+      "record_id": "conditioning480-20261013-040612",
+      "completed": true,
+      "before_after_hashes_identical": true
+    },
+    {
+      "record_id": "reference180-every5-20261013-044247",
+      "completed": true,
+      "before_after_hashes_identical": true
+    }
+  ],
+  "excluded": [
+    "private device snapshots",
+    "network addresses",
+    "authentication information",
+    "raw command logs"
+  ],
+  "publication_date": "2026-10-15"
+}

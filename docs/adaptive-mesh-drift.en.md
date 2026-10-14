@@ -82,3 +82,7 @@ The implementation supports this printer's Python 2.7.16 / Klipper `v0.10.0-530-
 The [validation record](validation/adaptive-mesh-drift-20261013.en.md) separates fixed-XY algorithm experiments, offline compatibility tests, and an actual 4×4 scan. Reference change can include bed or gantry movement. One reference may not represent the entire bed, and local sensor temperatures or nonlinear changes between references can leave residual error. Validate repeatability and first-layer printing on the target; these results are not a precision guarantee for every printer.
 
 On failure, do not produce a successful mesh, continue dependent ADXL/printing, or automatically lower Z or force a lift. Save status and the first error. Restore the old builder and added section according to target backups, reload, and native scanning is available again. Detailed backup mapping and recovery are in the agent implementation guide.
+
+## Experimental evidence
+
+See the [research record](research/probe-drift-20261013/REPORT.en.md) for warming, interrupted cooling, five/eight-minute conditioning, periodic references, raw data, and English figures. The record distinguishes fixed-location baseline consistency from spatial accuracy; successful integration is not presented as proof of a more accurate bed mesh.

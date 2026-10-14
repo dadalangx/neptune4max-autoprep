@@ -1,0 +1,2 @@
+# Keep experiment CSV bytes unchanged so their recorded SHA256 hashes survive checkout.
+data/*.csv -text

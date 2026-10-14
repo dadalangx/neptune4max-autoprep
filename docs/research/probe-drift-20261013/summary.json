@@ -1,0 +1,122 @@
+{
+  "scope": "One Neptune 4 Max; observational runs on 2026-10-13",
+  "new_printer_experiments_performed": false,
+  "sensor_body_temperature_measured": false,
+  "spatial_accuracy_ground_truth_measured": false,
+  "source_file_hashes_verified": 12,
+  "warming": {
+    "samples": 61,
+    "duration_s": 903.276478,
+    "initial_z_mm": -0.0975,
+    "final_z_mm": 0.1925,
+    "max_abs_mm": 0.31,
+    "range_mm": 0.31,
+    "rmse_from_initial_reference_mm": 0.2366817223718765,
+    "final_delta_mm": 0.29000000000000004,
+    "mean_delta_mm": 0.22336065573770492,
+    "p95_abs_mm": 0.2925,
+    "bed_range_c": [
+      59.99,
+      60.03
+    ],
+    "nozzle_range_c": [
+      139.77,
+      140.26
+    ]
+  },
+  "interrupted_cooling": {
+    "samples": 61,
+    "duration_s": 901.722416,
+    "initial_z_mm": 0.1725,
+    "final_z_mm": -0.04,
+    "max_abs_mm": 0.215,
+    "range_mm": 0.215,
+    "rmse_from_initial_reference_mm": 0.16528694621827802,
+    "final_delta_mm": -0.2125,
+    "mean_delta_mm": -0.15594262295081973,
+    "p95_abs_mm": 0.21,
+    "bed_range_c": [
+      59.68,
+      60.09
+    ],
+    "nozzle_range_c": [
+      139.76,
+      140.55
+    ]
+  },
+  "wait-300": {
+    "points": 90,
+    "accepted_probe_groups": 90,
+    "scan_raw_probes": 270,
+    "retry_groups": 0,
+    "duration_after_baseline_s": 440.424902677536,
+    "baseline_z_mm": 0.1025,
+    "max_abs_mm": 0.05500000000000001,
+    "range_mm": 0.057499999999999996,
+    "rmse_from_initial_reference_mm": 0.03462196637332368,
+    "final_delta_mm": 0.0475,
+    "mean_delta_mm": 0.030916666666666665,
+    "p95_abs_mm": 0.0475,
+    "max_triplet_range_mm": 0.024999999999999994
+  },
+  "wait-480": {
+    "points": 90,
+    "accepted_probe_groups": 90,
+    "scan_raw_probes": 270,
+    "retry_groups": 0,
+    "duration_after_baseline_s": 439.0726647377014,
+    "baseline_z_mm": 0.16,
+    "max_abs_mm": 0.012499999999999983,
+    "range_mm": 0.017499999999999988,
+    "rmse_from_initial_reference_mm": 0.0030276503540974916,
+    "final_delta_mm": -0.0025000000000000022,
+    "mean_delta_mm": 5.555555555555499e-05,
+    "p95_abs_mm": 0.0050000000000000044,
+    "max_triplet_range_mm": 0.024999999999999994
+  },
+  "reference-180": {
+    "points": 90,
+    "extra_reference_groups": 18,
+    "baseline_groups": 1,
+    "scan_raw_probes": 270,
+    "extra_reference_raw_probes": 54,
+    "total_raw_probes_including_baseline_and_arrival": 328,
+    "duration_after_baseline_s": 537.832192659378,
+    "raw": {
+      "max_abs_mm": 0.1225,
+      "range_mm": 0.1175,
+      "rmse_from_initial_reference_mm": 0.08226692666085335,
+      "final_delta_mm": 0.11249999999999999,
+      "mean_delta_mm": 0.07597222222222223,
+      "p95_abs_mm": 0.11249999999999999
+    },
+    "block_constant": {
+      "max_abs_mm": 0.015,
+      "range_mm": 0.029999999999999985,
+      "rmse_from_initial_reference_mm": 0.005496210815947049,
+      "final_delta_mm": 0.0,
+      "mean_delta_mm": -0.003194444444444443,
+      "p95_abs_mm": 0.012499999999999997
+    },
+    "time_interpolated": {
+      "max_abs_mm": 0.015426569769965912,
+      "range_mm": 0.02286625205150669,
+      "rmse_from_initial_reference_mm": 0.0031333205566214254,
+      "final_delta_mm": 0.0,
+      "mean_delta_mm": -7.607821233467278e-05,
+      "p95_abs_mm": 0.006693383371722965
+    },
+    "max_scan_triplet_range_mm": 0.02500000000000001,
+    "max_reference_triplet_range_mm": 0.022499999999999992
+  },
+  "real-xy-integration": {
+    "mesh_points": 16,
+    "total_reference_groups_including_baseline": 5,
+    "max_applied_correction_mm": 0.01666014129292398,
+    "final_reference_change_mm": 0.015000000008204228,
+    "scan_and_reference_duration_s": 72.49488033333364,
+    "maximum_reference_change_mm": 0.017500000007406147,
+    "verification": "Interpolation and CSV arithmetic verified; historical native-matrix audit passed",
+    "independent_spatial_accuracy_test": false
+  }
+}
